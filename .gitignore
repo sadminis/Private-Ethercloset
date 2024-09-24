@@ -44,3 +44,4 @@ obj/
 
 # Other sensitive files
 appsettings*.json
+.fake
