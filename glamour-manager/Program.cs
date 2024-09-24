@@ -7,9 +7,7 @@ class Program
     static async Task Main(string[] args)
     {
         SQLiteManager sqliteManager = new();
-        ApiClient apiClient = new();
-        List<FfxivItem> allItems = new();
-        allItems = await apiClient.getAllItems();
-        Console.WriteLine(allItems[100].Name);
+        bool result = await sqliteManager.MajorUpdateDatabase();
+        Console.WriteLine(result);
     }
 }

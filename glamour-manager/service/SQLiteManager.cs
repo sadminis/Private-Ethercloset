@@ -1,3 +1,4 @@
+using Lucene.Net.Search;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,43 @@ namespace GlamourManager
             }
         }
 
-        public void InsertItem(string name)
+        public async Task<bool> MajorUpdateDatabase()
+        {
+            ApiClient apiClient = new();
+            List<FfxivItem> allItems = new();
+            allItems = await apiClient.getAllItems();
+
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    var command = connection.CreateCommand();
+                    command.CommandText =
+                    @"
+                        INSERT INTO Items (Id, Icon, Name, Url)
+                        VALUES ($id, $icon, $name, $url)
+                    ";
+                    foreach (FfxivItem item in allItems)
+                    {
+                        Console.WriteLine($"id: {item.Id}, icon: {item.Icon}, name: {item.Name}, url: {item.Url}");
+                        command.Parameters.AddWithValue("$id", item.Id);
+                        command.Parameters.AddWithValue("$icon", item.Icon);
+                        command.Parameters.AddWithValue("$name", item.Name);
+                        command.Parameters.AddWithValue("$url", item.Url);
+                        command.ExecuteNonQuery();
+                        command.Parameters.Clear();
+                    }
+
+
+                    transaction.Commit();
+                }
+            }
+
+            return true;
+        }
+
+        private void InsertItem(FfxivItem item)
         {
             using (var connection = new SqliteConnection(_connectionString))
             {
@@ -42,10 +79,13 @@ namespace GlamourManager
                 var command = connection.CreateCommand();
                 command.CommandText =
                 @"
-                INSERT INTO Items (Name)
-                VALUES ($name)
+                INSERT INTO Items (Id, Icon, Name, Url)
+                VALUES ($id, $icon, $name, $url)
             ";
-                command.Parameters.AddWithValue("$name", name);
+                command.Parameters.AddWithValue("$id", item.Id);
+                command.Parameters.AddWithValue("icon", item.Icon);
+                command.Parameters.AddWithValue("$name", item.Name);
+                command.Parameters.AddWithValue("$url", item.Url);
                 command.ExecuteNonQuery();
             }
         }
