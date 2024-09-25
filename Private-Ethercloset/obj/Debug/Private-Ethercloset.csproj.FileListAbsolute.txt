@@ -1,0 +1,15 @@
+E:\GitHub\glamour-card-generator\Private-Ethercloset\bin\Debug\Private-Ethercloset.exe.config
+E:\GitHub\glamour-card-generator\Private-Ethercloset\bin\Debug\Private-Ethercloset.exe
+E:\GitHub\glamour-card-generator\Private-Ethercloset\bin\Debug\Private-Ethercloset.pdb
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private-Ethercloset.csproj.AssemblyReference.cache
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\MainWindow.g.cs
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\App.g.cs
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private-Ethercloset_MarkupCompile.cache
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private-Ethercloset_MarkupCompile.lref
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\MainWindow.baml
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private-Ethercloset.g.resources
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private_Ethercloset.Properties.Resources.resources
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private-Ethercloset.csproj.GenerateResource.cache
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private-Ethercloset.csproj.CoreCompileInputs.cache
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private-Ethercloset.exe
+E:\GitHub\glamour-card-generator\Private-Ethercloset\obj\Debug\Private-Ethercloset.pdb
