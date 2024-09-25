@@ -32,7 +32,8 @@
                    FontSize="22"
                    Margin="20,0,0,0"/>
 
-            <StackPanel Grid.Row="1">
+            <StackPanel Grid.Row="1"
+                        Margin="0,75,0,0">
                 
                 <RadioButton Content="首页"
                              Height="50"
