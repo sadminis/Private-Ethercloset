@@ -39,7 +39,7 @@
                              Height="50"
                              Foreground="white"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
+                             Style="{StaticResource MenuButtonTheme}" />
 
                 <RadioButton Content="衣柜"
                              Height="50"
