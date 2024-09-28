@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:Private_Ethercloset.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="私人以太衣柜" 
-        Height="600" Width="920"
+        Height="600" Width="1080"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
