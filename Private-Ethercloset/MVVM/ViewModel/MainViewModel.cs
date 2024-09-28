@@ -11,7 +11,7 @@ namespace Private_Ethercloset.MVVM.ViewModel
     class MainViewModel : ObservableObject
     {
         public HomeViewModel HomeVM { get; set; }
-        public LockerView LockerVM { get; set; }
+        public LockerViewModel LockerVM { get; set; }
 
 
 
@@ -33,8 +33,9 @@ namespace Private_Ethercloset.MVVM.ViewModel
 
         public MainViewModel() { 
             HomeVM = new HomeViewModel();
+            
+            LockerVM = new LockerViewModel();
 
-            LockerVM = new LockerView();
             CurrentView = HomeVM;
 
             HomeViewCommand = new RelayCommand(o =>

@@ -15,6 +15,10 @@
             <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
                 <view:HomeView/>
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:LockerViewModel}">
+                <view:LockerView/>
+            </DataTemplate>
             
         </ResourceDictionary>
     </Application.Resources>

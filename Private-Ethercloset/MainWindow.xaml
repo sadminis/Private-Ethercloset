@@ -51,8 +51,8 @@
                              Foreground="white"
                              FontSize="14"
                              Style="{StaticResource MenuButtonTheme}"
-                             IsChecked="True" 
-                             Command="{Binding HomeViewCommand}"/>
+                             Command="{Binding HomeViewCommand}"
+                             IsChecked="True" />
 
                 <RadioButton Content="衣柜"
                              Height="50"
