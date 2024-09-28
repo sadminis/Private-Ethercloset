@@ -37,6 +37,12 @@
                    FontSize="22"
                    Margin="20,0,0,0"/>
 
+            <TextBlock Grid.Row="0"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Background="Transparent"
+                  MouseDown="Draggable_MouseDown"/>
+
             <StackPanel Grid.Row="1"
                         Margin="0,75,0,0">
 

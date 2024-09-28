@@ -29,5 +29,13 @@ namespace Private_Ethercloset
         {
 
         }
+
+        private void Draggable_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
     }
 }
