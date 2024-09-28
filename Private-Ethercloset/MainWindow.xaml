@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Private_Ethercloset"
+        xmlns:viewModel="clr-namespace:Private_Ethercloset.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="私人以太衣柜" 
         Height="600" Width="920"
@@ -12,6 +13,10 @@
         Background="Transparent"
         AllowsTransparency="True">
 
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
+    
     <Border Background="#272537"
             CornerRadius="20">
         <Grid>
@@ -34,18 +39,21 @@
 
             <StackPanel Grid.Row="1"
                         Margin="0,75,0,0">
-                
+
                 <RadioButton Content="首页"
                              Height="50"
                              Foreground="white"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}" />
+                             Style="{StaticResource MenuButtonTheme}"
+                             IsChecked="True" 
+                             Command="{Binding HomeViewCommand}"/>
 
                 <RadioButton Content="衣柜"
                              Height="50"
                              Foreground="white"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding LockerViewCommand}"/>
 
                 <RadioButton Content="创建幻化卡"
                              Height="50"
@@ -62,8 +70,12 @@
                      Margin="5"
                      Grid.Column="1"
                      Style="{StaticResource ModernTextBox }"/>
+
+            <ContentControl Grid.Row="1"
+                Grid.Column="1"
+                Margin="5"
+                Content="{Binding CurrentView}"/>
+
         </Grid>
-
-
     </Border>
 </Window>
