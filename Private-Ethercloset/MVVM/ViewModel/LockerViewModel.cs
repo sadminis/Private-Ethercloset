@@ -25,6 +25,8 @@ namespace Private_Ethercloset.MVVM.ViewModel
             Images = new ObservableCollection<BitmapImage>();
 
             LoadImagesFromDirectory(appDirectory);
+
+            MonitorDirectory(appDirectory);
         }
 
         private void LoadImagesFromDirectory(string directoryPath)
