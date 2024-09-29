@@ -65,7 +65,8 @@
                              Height="50"
                              Foreground="white"
                              FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding CreateCardViewCommand}"/>
 
             </StackPanel>
 

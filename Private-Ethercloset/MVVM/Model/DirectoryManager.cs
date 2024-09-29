@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,16 +11,35 @@ namespace Private_Ethercloset.MVVM.Model
 {
     public static class DirectoryManager
     {
-        public static string createAppDirectory()
+        public static string getGalleryDirectory()
         {
-            string appDirectory = Path.Combine(Environment.CurrentDirectory, "Gallery");
+            string galleryDirectory = Path.Combine(Environment.CurrentDirectory, "Gallery");
 
-            if (!Directory.Exists(appDirectory))
+            if (!Directory.Exists(galleryDirectory))
             {
-                Directory.CreateDirectory(appDirectory);
+                Directory.CreateDirectory(galleryDirectory);
             }
 
-            return appDirectory;
+            return galleryDirectory;
+        }
+
+        public static string getResourceImagesDirectory()
+        {
+            string imagesDirectory = Path.Combine(Environment.CurrentDirectory, "Images");
+            return imagesDirectory;
+        }
+
+        public static string ImportPicture()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.png, *.bmp)|*.jpg;*.jpeg;*.png;*.bmp";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                return openFileDialog.FileName;
+            }
+
+            return null;
         }
     }
 }

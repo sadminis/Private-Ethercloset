@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="UploadButtonTheme" 
+           TargetType="{x:Type Button}"
+           BasedOn="{StaticResource {x:Type Button}}">
+        <Style.Setters>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch">
+
+                            <Border BorderThickness="0"
+                                    CornerRadius="5"
+                                    Background="#3A6D8C" 
+                                    x:Name="borderElement">
+
+                                <TextBlock Text="{TemplateBinding Property=Content}"
+                                           Foreground="{TemplateBinding Property=Foreground}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           />
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="borderElement" Property="Background" Value="#6A9AB0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#6A9AB0"/>
+            </Trigger>
+
+        </Style.Triggers>
+
+    </Style>
+</ResourceDictionary>
