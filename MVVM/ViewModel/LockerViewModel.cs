@@ -16,17 +16,17 @@ namespace Private_Ethercloset.MVVM.ViewModel
     class LockerViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<BitmapImage> Images { get; private set; }
-        private string appDirectory;
+        private string galleryDirectory;
 
         public LockerViewModel()
         {
-            appDirectory = DirectoryManager.createAppDirectory();
-            System.Diagnostics.Debug.WriteLine($"App Directory: {appDirectory}");
+            galleryDirectory = DirectoryManager.getGalleryDirectory();
+
             Images = new ObservableCollection<BitmapImage>();
 
-            LoadImagesFromDirectory(appDirectory);
+            LoadImagesFromDirectory(galleryDirectory);
 
-            MonitorDirectory(appDirectory);
+            MonitorDirectory(galleryDirectory);
         }
 
         private void LoadImagesFromDirectory(string directoryPath)

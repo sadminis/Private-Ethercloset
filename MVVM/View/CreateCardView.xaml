@@ -1,0 +1,450 @@
+﻿<UserControl x:Class="Private_Ethercloset.MVVM.View.CreateCardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Private_Ethercloset.MVVM.View"
+             xmlns:viewModel="clr-namespace:Private_Ethercloset.MVVM.ViewModel"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="750 " d:DesignWidth="1350">
+
+    <UserControl.DataContext>
+        <viewModel:CreateCardViewModel />
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+
+            <Image x:Name="ImageDisplay" Source="/Images/Placeholder.png" />
+
+            <StackPanel Grid.Column="0"
+                        Grid.Row="1">
+                <Button Content="选择图片"
+                        Background="#3A6D8C"
+                        Foreground="White"
+                        Style="{StaticResource UploadButtonTheme}"
+                        Margin="32,27,32,5" 
+                        Height="50"
+                        Click="UploadButton_Click"/>
+
+                <Button Content="保存到衣柜"
+                        Background="#3A6D8C"
+                        Foreground="White"
+                        Style="{StaticResource UploadButtonTheme}"
+                        Margin="32,0,32,27" 
+                        Height="50"
+                        Click="SaveButton_Click"/>
+            </StackPanel>
+            
+            
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="装备详情"
+                       Style="{StaticResource Catagory}"
+                       Grid.Column="0"
+                       Grid.Row="0"/>
+
+            <StackPanel Grid.Column="0" Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="武器 ：" FontSize="13" Style="{StaticResource Catagory}"/>
+                    <TextBox x:Name="WeaponEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="WeaponDye1"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色2 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="WeaponDye2"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">     
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+
+
+            <StackPanel Grid.Column="0" Grid.Row="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="头部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
+                    <TextBox x:Name="HeadEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="HeadDye1"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色2 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="HeadDye2"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+
+
+            <StackPanel Grid.Column="0" Grid.Row="3">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="胸部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
+                    <TextBox x:Name="ChestEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="ChestDye1"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色2 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="ChestDye2"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+
+
+            <StackPanel Grid.Column="0" Grid.Row="4">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="手部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
+                    <TextBox x:Name="HandEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="HandDye1"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色2 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="HandDye2"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+
+
+            <StackPanel Grid.Column="0" Grid.Row="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="腿部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
+                    <TextBox x:Name="LegEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="LegDye1"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色2 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="LegDye2"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+
+
+            <StackPanel Grid.Column="0" Grid.Row="6">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="脚部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
+                    <TextBox x:Name="FootEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="FootDye1"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="染色2 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
+                    <ComboBox x:Name="FootDye2"
+                              Width="160"
+                              materialDesign:HintAssist.Hint="无染色"
+                              materialDesign:HintAssist.FloatingHintHorizontalAlignment="Center"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              Background="#353340"  
+                              Foreground="#cfcfcf"
+                              Margin="8,0,0,0"
+                              SelectedItem="无染色" >
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="#212427"/>
+                                <!-- Dropdown item color -->
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+
+
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="1"
+                        Grid.Row="2">
+                <TextBlock Text="耳坠:" Style="{StaticResource Catagory}"/>
+                <TextBox x:Name="EarEntry"
+                         Background="#353340" 
+                         Foreground="#cfcfcf"
+                         Width="160" 
+                         Height="30"
+                         Margin="15,0,0,0"
+                         BorderThickness="1" 
+                         BorderBrush="#FF43434A"/>
+            </StackPanel>
+
+
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="1"
+                        Grid.Row="3">
+                <TextBlock Text="项链:" Style="{StaticResource Catagory}"/>
+                <TextBox x:Name="NeckEntry"
+                 Background="#353340" 
+                 Foreground="#cfcfcf"
+                 Width="160" 
+                 Height="30"
+                 Margin="15,0,0,0"
+                 BorderThickness="1" 
+                 BorderBrush="#FF43434A"/>
+            </StackPanel>
+
+
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="1"
+                        Grid.Row="4">
+                <TextBlock Text="手镯:" Style="{StaticResource Catagory}"/>
+                <TextBox x:Name="BraceletEntry"
+                         Background="#353340" 
+                         Foreground="#cfcfcf"
+                         Width="160" 
+                         Height="30"
+                         Margin="15,0,0,0"
+                         BorderThickness="1" 
+                         BorderBrush="#FF43434A"/>
+            </StackPanel>
+
+
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="1"
+                        Grid.Row="5">
+                <TextBlock Text="戒指:" Style="{StaticResource Catagory}"/>
+                <TextBox x:Name="Ring1Entry"
+                         Background="#353340" 
+                         Foreground="#cfcfcf"
+                         Width="160" 
+                         Height="30"
+                         Margin="15,0,0,0"
+                         BorderThickness="1" 
+                         BorderBrush="#FF43434A"/>
+            </StackPanel>
+
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="1"
+                        Grid.Row="6">
+                <TextBlock Text="戒指:" Style="{StaticResource Catagory}"/>
+                <TextBox x:Name="Ring2Entry"
+                         Background="#353340" 
+                         Foreground="#cfcfcf"
+                         Width="160" 
+                         Height="30"
+                         Margin="15,0,0,0"
+                         BorderThickness="1" 
+                         BorderBrush="#FF43434A"/>
+            </StackPanel>
+
+
+        </Grid>
+
+    </Grid>
+</UserControl>

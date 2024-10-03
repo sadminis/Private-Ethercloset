@@ -12,11 +12,13 @@ namespace Private_Ethercloset.MVVM.ViewModel
     {
         public HomeViewModel HomeVM { get; set; }
         public LockerViewModel LockerVM { get; set; }
+        public CreateCardViewModel CreateCardVM { get; set; }
 
 
 
         public RelayCommand HomeViewCommand { get; set; }
         public RelayCommand LockerViewCommand { get; set; }
+        public RelayCommand CreateCardViewCommand { get; set; }
 
         private object _currentView;
 
@@ -33,8 +35,8 @@ namespace Private_Ethercloset.MVVM.ViewModel
 
         public MainViewModel() { 
             HomeVM = new HomeViewModel();
-            
             LockerVM = new LockerViewModel();
+            CreateCardVM = new CreateCardViewModel();
 
             CurrentView = HomeVM;
 
@@ -44,8 +46,13 @@ namespace Private_Ethercloset.MVVM.ViewModel
             });
 
             LockerViewCommand = new RelayCommand(o =>
-            { 
+            {
                 CurrentView = LockerVM;
+            });
+
+            CreateCardViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = CreateCardVM;
             });
         }
     }

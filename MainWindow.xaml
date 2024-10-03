@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:Private_Ethercloset.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="私人以太衣柜" 
-        Height="600" Width="1080"
+        Height="900" Width="1620"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
@@ -21,20 +21,20 @@
             CornerRadius="20">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="6* "/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="75"/>
-                <RowDefinition/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="6*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Text="私人以太衣柜"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left" 
                    Foreground="White"
-                   FontSize="22"
+                   FontSize="25"
                    Margin="20,0,0,0"/>
 
             <TextBlock Grid.Row="0"
@@ -47,30 +47,31 @@
                         Margin="0,75,0,0">
 
                 <RadioButton Content="首页"
-                             Height="50"
+                             Height="70"
                              Foreground="white"
-                             FontSize="14"
+                             FontSize="18"
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding HomeViewCommand}"
                              IsChecked="True" />
 
                 <RadioButton Content="衣柜"
-                             Height="50"
+                             Height="70"
                              Foreground="white"
-                             FontSize="14"
+                             FontSize="18"
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding LockerViewCommand}"/>
 
                 <RadioButton Content="创建幻化卡"
-                             Height="50"
+                             Height="70"
                              Foreground="white"
-                             FontSize="14"
-                             Style="{StaticResource MenuButtonTheme}"/>
+                             FontSize="18"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding CreateCardViewCommand}"/>
 
             </StackPanel>
 
-            <TextBox Height="40"
-                     Width="250"
+            <TextBox Height="60"
+                     Width="375"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Left"
                      Margin="5"

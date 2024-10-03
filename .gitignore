@@ -4,3 +4,6 @@
 *.user
 *.suo
 *.ide
+/packages
+/bin
+/obj
