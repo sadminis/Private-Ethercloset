@@ -8,6 +8,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style.Setters>
     </Style>
 </ResourceDictionary>

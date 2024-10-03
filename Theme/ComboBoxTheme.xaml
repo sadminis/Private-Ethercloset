@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <Style TargetType="ComboBoxItem" x:Key="createCardDropDown">
+        <Setter Property="Background" Value="LightGray"/>
+        <!-- Dropdown Item Background -->
+        <Setter Property="Foreground" Value="Black"/>
+        <!-- Dropdown Item Foreground -->
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="Gray"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="LightBlue"/>
+                <!-- Hover Background Color -->
+                <Setter Property="Foreground" Value="White"/>
+                <!-- Hover Foreground Color -->
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="ComboBox" x:Key="createCardComboBox">
+        <!-- Popup Background -->
+        <Setter Property="Foreground" Value="#cfcfcf"/>
+        <!-- ComboBox Text Foreground -->
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="materialDesign:HintAssist.Hint" Value="Select an option"/>
+        <Setter Property="materialDesign:TextFieldAssist.DecorationVisibility" Value="Collapsed"/>
+    </Style>
+</ResourceDictionary>

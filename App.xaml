@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Private_Ethercloset"
              xmlns:viewModel="clr-namespace:Private_Ethercloset.MVVM.ViewModel"
              xmlns:view="clr-namespace:Private_Ethercloset.MVVM.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,6 +13,10 @@
                 <ResourceDictionary Source="Theme/TextboxTheme.xaml"/>
                 <ResourceDictionary Source="Theme/ButtonTheme.xaml" />
                 <ResourceDictionary Source="Theme/createCardTextBlock.xaml"/>
+                <ResourceDictionary Source="Theme/ComboBoxTheme.xaml"/>
+
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">

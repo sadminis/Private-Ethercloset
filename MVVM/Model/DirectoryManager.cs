@@ -45,5 +45,30 @@ namespace Private_Ethercloset.MVVM.Model
 
             return null;
         }
+
+        public static string getNewLocker()
+        {
+            string galleryPath = getGalleryDirectory();
+
+            // Get all existing folders in the gallery
+            var existingFolders = Directory.GetDirectories(galleryPath)
+                                            .Select(folder => new DirectoryInfo(folder).Name)
+                                            .ToList();
+
+            // Find the next available folder number
+            int nextFolderNumber = 1;
+
+            // Increment the folder number based on existing folders
+            while (existingFolders.Contains(nextFolderNumber.ToString()))
+            {
+                nextFolderNumber++;
+            }
+
+            // Create the new folder
+            string newFolderPath = Path.Combine(galleryPath, nextFolderNumber.ToString());
+            Directory.CreateDirectory(newFolderPath);
+
+            return newFolderPath;
+        }
     }
 }

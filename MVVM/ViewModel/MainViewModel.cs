@@ -46,7 +46,7 @@ namespace Private_Ethercloset.MVVM.ViewModel
             });
 
             LockerViewCommand = new RelayCommand(o =>
-            { 
+            {
                 CurrentView = LockerVM;
             });
 
