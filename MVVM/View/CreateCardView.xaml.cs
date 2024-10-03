@@ -21,10 +21,16 @@ namespace Private_Ethercloset.MVVM.View
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
         { 
-            var image = DirectoryManager.ImportPicture();
-            if (image != null) {
-                //var cropWindow = new CropWindow(image);
-                //cropWindow.Show();
+            var imagePath = DirectoryManager.ImportPicture();
+            if (imagePath != null) {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(imagePath);
+                bitmap.EndInit();
+                bitmap.Freeze(); // Optionally freeze the bitmap for performance
+
+                // Set the ImageSource of the Image control
+                ImageDisplay.Source = bitmap;
             }
             
         }

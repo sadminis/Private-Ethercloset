@@ -30,7 +30,7 @@ namespace Private_Ethercloset.MVVM.Model
             return imagesDirectory;
         }
 
-        public static BitmapImage ImportPicture()
+        public static string? ImportPicture()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -40,13 +40,7 @@ namespace Private_Ethercloset.MVVM.Model
             if (openFileDialog.ShowDialog() == true)
             {
                 string filePath = openFileDialog.FileName;
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(filePath); // Load the file into the BitmapImage
-                bitmap.CacheOption = BitmapCacheOption.OnLoad; // Optional: to avoid locking the file
-                bitmap.EndInit();
-
-                return bitmap;
+                return filePath;
             }
 
             return null;

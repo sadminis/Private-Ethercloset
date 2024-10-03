@@ -1,0 +1,34 @@
+﻿<Window x:Class="Private_Ethercloset.CropWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Private_Ethercloset"
+        mc:Ignorable="d"
+        Title="CropWindow" Height="800" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Image x:Name="DisplayImage"
+               Stretch="Uniform" 
+               Margin="10"
+               MouseDown="DisplayImage_MouseDown" 
+               MouseMove="DisplayImage_MouseMove"
+               MouseUp="DisplayImage_MouseUp"/>
+
+        <Rectangle x:Name="CroppingRectangle" 
+                   Stroke="Red" 
+                   StrokeThickness="2" 
+                   Fill="Transparent" 
+                   Visibility="Hidden"/>
+
+        <Button x:Name="CropButton"
+                Content="Crop Image"
+                Click="CropButton_Click"
+                Grid.Row="1" 
+                Margin="10"/>
+    </Grid>
+</Window>

@@ -17,14 +17,15 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-
+        
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <Image Source="/Images/Placeholder.png" />
+
+            <Image x:Name="ImageDisplay" Source="/Images/Placeholder.png" />
             <Button Content="选择图片"
                     Background="#3A6D8C"
                     Foreground="White"
