@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Private_Ethercloset.MVVM.Model
 {
@@ -29,14 +30,23 @@ namespace Private_Ethercloset.MVVM.Model
             return imagesDirectory;
         }
 
-        public static string ImportPicture()
+        public static BitmapImage ImportPicture()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.png, *.bmp)|*.jpg;*.jpeg;*.png;*.bmp";
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image files |*.jpg;*.jpeg;*.png;*.bmp"
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                return openFileDialog.FileName;
+                string filePath = openFileDialog.FileName;
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(filePath); // Load the file into the BitmapImage
+                bitmap.CacheOption = BitmapCacheOption.OnLoad; // Optional: to avoid locking the file
+                bitmap.EndInit();
+
+                return bitmap;
             }
 
             return null;

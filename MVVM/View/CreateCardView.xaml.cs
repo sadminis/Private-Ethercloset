@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 using System.Drawing;
 using Private_Ethercloset.MVVM.Model;
+using System.Windows.Media.Imaging;
+using System;
 
 
 namespace Private_Ethercloset.MVVM.View
@@ -19,7 +21,12 @@ namespace Private_Ethercloset.MVVM.View
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
         { 
-            var imagePath = DirectoryManager.ImportPicture();
+            var image = DirectoryManager.ImportPicture();
+            if (image != null) {
+                //var cropWindow = new CropWindow(image);
+                //cropWindow.Show();
+            }
+            
         }
     }
 }

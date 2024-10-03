@@ -5,3 +5,5 @@
 *.suo
 *.ide
 /packages
+/bin
+/obj
