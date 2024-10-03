@@ -264,16 +264,12 @@ namespace Private_Ethercloset.MVVM.View
                 //string outputImagePath = DirectoryManager.getNewLocker();
                 string outputImagePath = Path.Combine(DirectoryManager.getNewLocker(), "front.png");
 
-                // Debugging: Check bitmap dimensions
-                MessageBox.Show($"Bitmap Width: {bitmap.Width}, Height: {bitmap.Height}", "Bitmap Info", MessageBoxButton.OK);
-
-                MessageBox.Show($"Output image path: {outputImagePath}", "Path Info", MessageBoxButton.OK);
 
                 try
                 {
                     // Save the modified image as a PNG file
                     bitmap.Save(outputImagePath, ImageFormat.Png);
-                    MessageBox.Show($"Image saved successfully to {outputImagePath}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show($"成功保存到衣柜", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
