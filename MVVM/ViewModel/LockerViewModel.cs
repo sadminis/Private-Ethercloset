@@ -24,14 +24,14 @@ namespace Private_Ethercloset.MVVM.ViewModel
 
             Images = new ObservableCollection<BitmapImage>();
 
-            LoadImagesFromDirectory(galleryDirectory);
-
-            MonitorDirectory(galleryDirectory);
+            LoadImagesFromDirectory();
         }
 
-        private void LoadImagesFromDirectory(string directoryPath)
+        public void LoadImagesFromDirectory()
         {
-            var directory = Directory.GetDirectories(directoryPath);
+            Images.Clear();
+
+            var directory = Directory.GetDirectories(galleryDirectory);
 
             foreach (var dir in directory)
             {
@@ -43,21 +43,6 @@ namespace Private_Ethercloset.MVVM.ViewModel
                 }
             }
         }
-
-        private void MonitorDirectory(string directoryPath)
-        {
-            FileSystemWatcher watcher = new FileSystemWatcher
-            {
-                Path = directoryPath,
-                NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastWrite,
-                Filter = "*.*",
-                EnableRaisingEvents = true
-            };
-
-            watcher.Created += (sender, e) => LoadImagesFromDirectory(directoryPath);
-        }
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

@@ -47,6 +47,7 @@ namespace Private_Ethercloset.MVVM.ViewModel
 
             LockerViewCommand = new RelayCommand(o =>
             {
+                LockerVM.LoadImagesFromDirectory();
                 CurrentView = LockerVM;
             });
 
