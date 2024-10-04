@@ -9,6 +9,7 @@ using static MaterialDesignThemes.Wpf.Theme;
 using System.Text;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Data.SQLite;
 
 
 namespace Private_Ethercloset.MVVM.View
@@ -19,17 +20,7 @@ namespace Private_Ethercloset.MVVM.View
     public partial class CreateCardView : UserControl
     {
         private BitmapImage? _image;
-
-        public CreateCardView()
-        {
-            InitializeComponent();
-            PopulateComboBox();
-        }
-
-        private void PopulateComboBox()
-        {
-            // Create a list of items
-            List<string> items = new List<string>
+        private List<string> items = new List<string>
             {
                 "无染色",
                 "----------------",
@@ -159,6 +150,16 @@ namespace Private_Ethercloset.MVVM.View
                 "金属铜染剂"
             };
 
+        public CreateCardView()
+        {
+            InitializeComponent();
+            PopulateComboBox();
+        }
+
+        private void PopulateComboBox()
+        {
+            // Create a list of items
+
             // Set the ComboBox's ItemsSource to the list of items
             WeaponDye1.ItemsSource = items;
             WeaponDye2.ItemsSource = items;
@@ -282,24 +283,380 @@ namespace Private_Ethercloset.MVVM.View
             }
         }
 
-        private void SaveTestImage()
+        private List<string> PerformFuzzySearch(string searchTerm)
         {
-            string testOutputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "testImage.png");
-            using (Bitmap testBitmap = new Bitmap(100, 100))
+            var results = new List<string>();
+
+            string query = "SELECT Name FROM Items WHERE Name LIKE @searchTerm";
+            using (var connection = new DatabaseHelper().GetConnection())
             {
-                using (Graphics g = Graphics.FromImage(testBitmap))
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
                 {
-                    g.Clear(Color.Red); // Fill with a solid color for testing
+                    command.Parameters.AddWithValue("@searchTerm", "%" + searchTerm + "%");
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            results.Add(reader["Name"].ToString());
+                        }
+                    }
                 }
-                try
-                {
-                    testBitmap.Save(testOutputPath, ImageFormat.Png);
-                    MessageBox.Show($"Test image saved successfully to {testOutputPath}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error saving test image: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+            }
+
+            return results;
+        }
+
+        private void WeaponSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (WeaponSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = WeaponSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                WeaponEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                WeaponSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void OnWeaponEntryTextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = WeaponEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                WeaponSearchResults.ItemsSource = results;
+                WeaponSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                WeaponSearchResults.ItemsSource = null;
+                WeaponSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void HeadSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (HeadSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = HeadSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                HeadEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                HeadSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void HeadEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = HeadEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                HeadSearchResults.ItemsSource = results;
+                HeadSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                HeadSearchResults.ItemsSource = null;
+                HeadSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void ChestSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (ChestSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = ChestSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                ChestEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                ChestSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void ChestEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = ChestEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                ChestSearchResults.ItemsSource = results;
+                ChestSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                ChestSearchResults.ItemsSource = null;
+                ChestSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void HandSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (HandSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = HandSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                HandEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                HandSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void HandEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = HandEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                HandSearchResults.ItemsSource = results;
+                HandSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                HandSearchResults.ItemsSource = null;
+                HandSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void LegSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (LegSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = LegSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                LegEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                LegSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void LegEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = LegEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                LegSearchResults.ItemsSource = results;
+                LegSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                LegSearchResults.ItemsSource = null;
+                LegSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void FootSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (FootSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = FootSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                FootEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                FootSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void FootEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = FootEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                FootSearchResults.ItemsSource = results;
+                FootSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                FootSearchResults.ItemsSource = null;
+                FootSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void EarSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (EarSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = EarSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                EarEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                EarSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void EarEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = EarEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                EarSearchResults.ItemsSource = results;
+                EarSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                EarSearchResults.ItemsSource = null;
+                EarSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void NeckSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (NeckSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = NeckSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                NeckEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                NeckSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void NeckEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = NeckEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                NeckSearchResults.ItemsSource = results;
+                NeckSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                NeckSearchResults.ItemsSource = null;
+                NeckSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void BraceletSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (BraceletSearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = BraceletSearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                BraceletEntry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                BraceletSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void BraceletEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = BraceletEntry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                BraceletSearchResults.ItemsSource = results;
+                BraceletSearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                BraceletSearchResults.ItemsSource = null;
+                BraceletSearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void Ring1SearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (Ring1SearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = Ring1SearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                Ring1Entry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                Ring1SearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void Ring1Entry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = Ring1Entry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                Ring1SearchResults.ItemsSource = results;
+                Ring1SearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                Ring1SearchResults.ItemsSource = null;
+                Ring1SearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void Ring2SearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Check if the ComboBox has a selected item
+            if (Ring2SearchResults.SelectedItem != null)
+            {
+                // Get the selected item (ensure it's of type string)
+                string selectedItem = Ring2SearchResults.SelectedItem.ToString();
+
+                // Set the text of the WeaponEntry TextBox to the selected item
+                Ring2Entry.Text = selectedItem;
+
+                // Optionally close the dropdown after selection
+                Ring2SearchResults.IsDropDownOpen = false;
+            }
+        }
+
+        private void Ring2Entry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTerm = Ring2Entry.Text;
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var results = PerformFuzzySearch(searchTerm);
+                Ring2SearchResults.ItemsSource = results;
+                Ring2SearchResults.IsDropDownOpen = true;
+            }
+            else
+            {
+                Ring2SearchResults.ItemsSource = null;
+                Ring2SearchResults.IsDropDownOpen = false;
             }
         }
     }

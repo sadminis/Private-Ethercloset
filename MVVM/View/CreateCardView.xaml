@@ -75,7 +75,27 @@
             <StackPanel Grid.Column="0" Grid.Row="1">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="武器 ：" FontSize="13" Style="{StaticResource Catagory}"/>
-                    <TextBox x:Name="WeaponEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                    <Grid>
+                        <ComboBox x:Name="WeaponSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="WeaponSearchResults_SelectionChanged"/>
+
+                        <TextBox x:Name="WeaponEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="OnWeaponEntryTextChanged"/>
+                    </Grid>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
@@ -124,7 +144,27 @@
             <StackPanel Grid.Column="0" Grid.Row="2">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="头部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
-                    <TextBox x:Name="HeadEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                    <Grid>
+                        <ComboBox x:Name="HeadSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="HeadSearchResults_SelectionChanged"/>
+
+                        <TextBox x:Name="HeadEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="HeadEntry_TextChanged"/>
+                    </Grid>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
@@ -173,7 +213,27 @@
             <StackPanel Grid.Column="0" Grid.Row="3">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="胸部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
-                    <TextBox x:Name="ChestEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                    <Grid>
+                        <ComboBox x:Name="ChestSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="ChestSearchResults_SelectionChanged"/>
+
+                        <TextBox x:Name="ChestEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="ChestEntry_TextChanged"/>
+                    </Grid>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
@@ -222,7 +282,27 @@
             <StackPanel Grid.Column="0" Grid.Row="4">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="手部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
-                    <TextBox x:Name="HandEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                    <Grid>
+                        <ComboBox x:Name="HandSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="HandSearchResults_SelectionChanged"/>
+
+                        <TextBox x:Name="HandEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="HandEntry_TextChanged"/>
+                    </Grid>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
@@ -271,7 +351,27 @@
             <StackPanel Grid.Column="0" Grid.Row="5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="腿部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
-                    <TextBox x:Name="LegEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                    <Grid>
+                        <ComboBox x:Name="LegSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="LegSearchResults_SelectionChanged"/>
+
+                        <TextBox x:Name="LegEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="LegEntry_TextChanged"/>
+                    </Grid>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
@@ -320,7 +420,27 @@
             <StackPanel Grid.Column="0" Grid.Row="6">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="脚部 ：" FontSize="13" Style="{StaticResource Catagory}"/>
-                    <TextBox x:Name="FootEntry" Background="#353340" Foreground="#cfcfcf" Width="160" Margin="15,0,0,0" BorderThickness="1" BorderBrush="#FF43434A"/>
+                    <Grid>
+                        <ComboBox x:Name="FootSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="FootSearchResults_SelectionChanged"/>
+
+                        <TextBox x:Name="FootEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="FootEntry_TextChanged"/>
+                    </Grid>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="染色1 ：" FontSize="13"  Style="{StaticResource Catagory}"/>
@@ -370,14 +490,26 @@
                         Grid.Column="1"
                         Grid.Row="2">
                 <TextBlock Text="耳坠:" Style="{StaticResource Catagory}"/>
-                <TextBox x:Name="EarEntry"
-                         Background="#353340" 
-                         Foreground="#cfcfcf"
-                         Width="160" 
-                         Height="30"
-                         Margin="15,0,0,0"
-                         BorderThickness="1" 
-                         BorderBrush="#FF43434A"/>
+                <Grid>
+                    <ComboBox x:Name="EarSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="EarSearchResults_SelectionChanged"/>
+
+                    <TextBox x:Name="EarEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="EarEntry_TextChanged"/>
+                </Grid>
             </StackPanel>
 
 
@@ -386,14 +518,26 @@
                         Grid.Column="1"
                         Grid.Row="3">
                 <TextBlock Text="项链:" Style="{StaticResource Catagory}"/>
-                <TextBox x:Name="NeckEntry"
-                 Background="#353340" 
-                 Foreground="#cfcfcf"
-                 Width="160" 
-                 Height="30"
-                 Margin="15,0,0,0"
-                 BorderThickness="1" 
-                 BorderBrush="#FF43434A"/>
+                <Grid>
+                    <ComboBox x:Name="NeckSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="NeckSearchResults_SelectionChanged"/>
+
+                    <TextBox x:Name="NeckEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="NeckEntry_TextChanged"/>
+                </Grid>
             </StackPanel>
 
 
@@ -402,14 +546,26 @@
                         Grid.Column="1"
                         Grid.Row="4">
                 <TextBlock Text="手镯:" Style="{StaticResource Catagory}"/>
-                <TextBox x:Name="BraceletEntry"
-                         Background="#353340" 
-                         Foreground="#cfcfcf"
-                         Width="160" 
-                         Height="30"
-                         Margin="15,0,0,0"
-                         BorderThickness="1" 
-                         BorderBrush="#FF43434A"/>
+                <Grid>
+                    <ComboBox x:Name="BraceletSearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="BraceletSearchResults_SelectionChanged"/>
+
+                    <TextBox x:Name="BraceletEntry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="BraceletEntry_TextChanged"/>
+                </Grid>
             </StackPanel>
 
 
@@ -418,14 +574,26 @@
                         Grid.Column="1"
                         Grid.Row="5">
                 <TextBlock Text="戒指:" Style="{StaticResource Catagory}"/>
-                <TextBox x:Name="Ring1Entry"
-                         Background="#353340" 
-                         Foreground="#cfcfcf"
-                         Width="160" 
-                         Height="30"
-                         Margin="15,0,0,0"
-                         BorderThickness="1" 
-                         BorderBrush="#FF43434A"/>
+                <Grid>
+                    <ComboBox x:Name="Ring1SearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="Ring1SearchResults_SelectionChanged"/>
+
+                    <TextBox x:Name="Ring1Entry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="Ring1Entry_TextChanged"/>
+                </Grid>
             </StackPanel>
 
 
@@ -433,14 +601,26 @@
                         Grid.Column="1"
                         Grid.Row="6">
                 <TextBlock Text="戒指:" Style="{StaticResource Catagory}"/>
-                <TextBox x:Name="Ring2Entry"
-                         Background="#353340" 
-                         Foreground="#cfcfcf"
-                         Width="160" 
-                         Height="30"
-                         Margin="15,0,0,0"
-                         BorderThickness="1" 
-                         BorderBrush="#FF43434A"/>
+                <Grid>
+                    <ComboBox x:Name="Ring2SearchResults"
+                                  Width="160"
+                                  Margin="15,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  SelectionChanged="Ring2SearchResults_SelectionChanged"/>
+
+                    <TextBox x:Name="Ring2Entry"
+                                 Background="#353340"
+                                 Foreground="#cfcfcf" 
+                                 Width="160" 
+                                 Height="30"
+                                 Margin="15,0,0,0"
+                                 BorderThickness="1"
+                                 BorderBrush="#FF43434A"
+                                 materialDesign:HintAssist.Hint="输入装备名称"
+                                 TextChanged="Ring2Entry_TextChanged"/>
+                </Grid>
             </StackPanel>
 
 

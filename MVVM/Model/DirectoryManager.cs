@@ -70,5 +70,11 @@ namespace Private_Ethercloset.MVVM.Model
 
             return newFolderPath;
         }
+
+        public static string getDatabasePath()
+        {
+            string appDataPath = Path.Combine(Environment.CurrentDirectory, "Resources");
+            return Path.Combine(appDataPath, "data.db");
+        }
     }
 }
