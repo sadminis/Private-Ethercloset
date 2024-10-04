@@ -21,7 +21,6 @@ def fetch_data(conn):
     while True:
         print(page)
         url = f"https://cafemaker.wakingsands.com/item?columns=ID,Name,ClassJobCategory.Name,ItemUICategory,Icon&limit=3000&page={page}"
-        # url = f'https://cafemaker.wakingsands.com/item?columns=ID,Name,ClassJobCategory.Name&limit=3000&page={page}'
         response = requests.get(url)
         
         if response.status_code != 200:
@@ -58,6 +57,11 @@ def delete_null_class_job_categories(conn):
         cursor.execute('''
             DELETE FROM items
             WHERE ClassJobCategoryName IS NULL
+        ''')
+
+        cursor.execute('''
+            DELETE FROM items
+            WHERE ItemUICategoryID == 33
         ''')
     print("Deleted rows where ClassJobCategory.Name is null.")
 
