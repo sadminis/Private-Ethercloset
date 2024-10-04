@@ -10,7 +10,8 @@ def create_database():
                     ID INTEGER PRIMARY KEY,
                     Name TEXT,
                     ClassJobCategoryName TEXT,
-                    ItemUICategoryID INTEGER)''')
+                    ItemUICategoryID INTEGER,
+                    Icon TEXT)''')
     conn.commit()
     return conn
 
@@ -19,7 +20,7 @@ def fetch_data(conn):
     page = 1
     while True:
         print(page)
-        url = f"https://cafemaker.wakingsands.com/item?columns=ID,Name,ClassJobCategory.Name,ItemUICategory&limit=3000&page={page}"
+        url = f"https://cafemaker.wakingsands.com/item?columns=ID,Name,ClassJobCategory.Name,ItemUICategory,Icon&limit=3000&page={page}"
         # url = f'https://cafemaker.wakingsands.com/item?columns=ID,Name,ClassJobCategory.Name&limit=3000&page={page}'
         response = requests.get(url)
         
@@ -40,12 +41,13 @@ def fetch_data(conn):
             cursor = conn.cursor()
             for item in items:
                 if item['ItemUICategory'] != None:
-                    cursor.execute('''INSERT OR IGNORE INTO items (ID, Name, ClassJobCategoryName, ItemUICategoryID)
-                        VALUES (?, ?, ?, ?)''',
+                    cursor.execute('''INSERT OR IGNORE INTO items (ID, Name, ClassJobCategoryName, ItemUICategoryID, Icon)
+                        VALUES (?, ?, ?, ?, ?)''',
                     (item['ID'], 
                         item['Name'], 
                         item['ClassJobCategory']['Name'], 
-                        item['ItemUICategory']['ID']))
+                        item['ItemUICategory']['ID'],
+                        item['Icon']))
         
         print(f"Fetched and inserted page {page} with {len(items)} items.")
         page += 1
