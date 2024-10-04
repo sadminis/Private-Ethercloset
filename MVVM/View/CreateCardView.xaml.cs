@@ -221,11 +221,39 @@ namespace Private_Ethercloset.MVVM.View
         {
             if (_image != null) 
             {
+                DatabaseHelper databaseHelper = new DatabaseHelper();
                 List<int> indices = new List<int>();
-                indices.Add(0);
-                indices.Add(1);
-                indices.Add(2);
-                indices.Add(3);
+                indices.Add(databaseHelper.GetItemIdByName(WeaponEntry.Text));
+                indices.Add(items.IndexOf(WeaponDye1.SelectedItem.ToString()));
+                indices.Add(items.IndexOf(WeaponDye2.SelectedItem.ToString()));
+                
+                indices.Add(databaseHelper.GetItemIdByName(HeadEntry.Text));
+                indices.Add(items.IndexOf(HeadDye1.SelectedItem.ToString()));
+                indices.Add(items.IndexOf(HeadDye2.SelectedItem.ToString()));
+
+                indices.Add(databaseHelper.GetItemIdByName(ChestEntry.Text));
+                indices.Add(items.IndexOf(ChestDye1.SelectedItem.ToString()));
+                indices.Add(items.IndexOf(ChestDye2.SelectedItem.ToString()));
+
+                indices.Add(databaseHelper.GetItemIdByName(HandEntry.Text));
+                indices.Add(items.IndexOf(HandDye1.SelectedItem.ToString()));
+                indices.Add(items.IndexOf(HandDye2.SelectedItem.ToString()));
+
+                indices.Add(databaseHelper.GetItemIdByName(LegEntry.Text));
+                indices.Add(items.IndexOf(LegDye1.SelectedItem.ToString()));
+                indices.Add(items.IndexOf(LegDye2.SelectedItem.ToString()));
+
+                indices.Add(databaseHelper.GetItemIdByName(FootEntry.Text));
+                indices.Add(items.IndexOf(FootDye1.SelectedItem.ToString()));
+                indices.Add(items.IndexOf(FootDye2.SelectedItem.ToString()));
+
+                indices.Add(databaseHelper.GetItemIdByName(EarEntry.Text));
+                indices.Add(databaseHelper.GetItemIdByName(NeckEntry.Text));
+                indices.Add(databaseHelper.GetItemIdByName(BraceletEntry.Text));
+                indices.Add(databaseHelper.GetItemIdByName(FootEntry.Text));
+                indices.Add(databaseHelper.GetItemIdByName(Ring1Entry.Text));
+                indices.Add(databaseHelper.GetItemIdByName(Ring2Entry.Text));
+
 
                 Bitmap bitmap = convertBitmapImagetoBitmap(_image);
 
@@ -287,7 +315,7 @@ namespace Private_Ethercloset.MVVM.View
         {
             var results = new List<string>();
 
-            string query = "SELECT Name FROM Items WHERE Name LIKE @searchTerm";
+            string query = "SELECT name FROM items WHERE name LIKE @searchTerm";
             using (var connection = new DatabaseHelper().GetConnection())
             {
                 connection.Open();
