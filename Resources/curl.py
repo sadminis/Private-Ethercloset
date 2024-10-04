@@ -6,13 +6,11 @@ import json
 def create_database():
     conn = sqlite3.connect('items.db')
     cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS items (
-            id INTEGER PRIMARY KEY,
-            name TEXT,
-            class_job_category_name TEXT
-        )
-    ''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS items (
+                    ID INTEGER PRIMARY KEY,
+                    Name TEXT,
+                    ClassJobCategoryName TEXT,
+                    ItemUICategoryID INTEGER)''')
     conn.commit()
     return conn
 
@@ -21,7 +19,8 @@ def fetch_data(conn):
     page = 1
     while True:
         print(page)
-        url = f'https://cafemaker.wakingsands.com/item?columns=ID,Name,ClassJobCategory.Name&limit=3000&page={page}'
+        url = f"https://cafemaker.wakingsands.com/item?columns=ID,Name,ClassJobCategory.Name,ItemUICategory&limit=3000&page={page}"
+        # url = f'https://cafemaker.wakingsands.com/item?columns=ID,Name,ClassJobCategory.Name&limit=3000&page={page}'
         response = requests.get(url)
         
         if response.status_code != 200:
@@ -32,7 +31,7 @@ def fetch_data(conn):
         
         # Step 3: Insert data into the SQLite database
         items = data.get('Results', [])
-        print(items)
+
         if not items:
             print("No more items to fetch.")
             break
@@ -40,10 +39,13 @@ def fetch_data(conn):
         with conn:
             cursor = conn.cursor()
             for item in items:
-                cursor.execute('''
-                    INSERT INTO items (id, name, class_job_category_name)
-                    VALUES (?, ?, ?)
-                ''', (item['ID'], item['Name'], item['ClassJobCategory']['Name']))
+                if item['ItemUICategory'] != None:
+                    cursor.execute('''INSERT OR IGNORE INTO items (ID, Name, ClassJobCategoryName, ItemUICategoryID)
+                        VALUES (?, ?, ?, ?)''',
+                    (item['ID'], 
+                        item['Name'], 
+                        item['ClassJobCategory']['Name'], 
+                        item['ItemUICategory']['ID']))
         
         print(f"Fetched and inserted page {page} with {len(items)} items.")
         page += 1
@@ -53,7 +55,7 @@ def delete_null_class_job_categories(conn):
         cursor = conn.cursor()
         cursor.execute('''
             DELETE FROM items
-            WHERE class_job_category_name IS NULL
+            WHERE ClassJobCategoryName IS NULL
         ''')
     print("Deleted rows where ClassJobCategory.Name is null.")
 
