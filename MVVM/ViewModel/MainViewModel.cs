@@ -2,23 +2,31 @@
 using Private_Ethercloset.MVVM.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Private_Ethercloset.MVVM.ViewModel
 {
-    class MainViewModel : ObservableObject
+    public class MainViewModel : ObservableObject
     {
         public HomeViewModel HomeVM { get; set; }
         public LockerViewModel LockerVM { get; set; }
         public CreateCardViewModel CreateCardVM { get; set; }
+        public DecryptCardViewModel DecryptCardVM { get; set; }
 
 
 
         public RelayCommand HomeViewCommand { get; set; }
         public RelayCommand LockerViewCommand { get; set; }
         public RelayCommand CreateCardViewCommand { get; set; }
+        public RelayCommand DecryptCardViewCommand { get; set; }
 
         private object _currentView;
 
@@ -35,8 +43,9 @@ namespace Private_Ethercloset.MVVM.ViewModel
 
         public MainViewModel() { 
             HomeVM = new HomeViewModel();
-            LockerVM = new LockerViewModel();
+            LockerVM = new LockerViewModel(this);
             CreateCardVM = new CreateCardViewModel();
+            DecryptCardVM = new DecryptCardViewModel();
 
             CurrentView = HomeVM;
 
@@ -55,6 +64,23 @@ namespace Private_Ethercloset.MVVM.ViewModel
             {
                 CurrentView = CreateCardVM;
             });
+
+            DecryptCardViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = DecryptCardVM;
+            });
+
+
+
         }
+
+        public void NavigateToDecrypt(BitmapImage image)
+        {
+            DecryptCardView decryptCardView = new DecryptCardView(image);
+            CurrentView = decryptCardView;
+        }
+
+
+
     }
 }

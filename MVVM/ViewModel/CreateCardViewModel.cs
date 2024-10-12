@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Private_Ethercloset.MVVM.ViewModel
 {
-    class CreateCardViewModel : INotifyPropertyChanged
+    public class CreateCardViewModel : INotifyPropertyChanged
     {
         public string imageSource;
         private string DefaultImagePath;

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿
+
+using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using System.Drawing;
@@ -10,6 +12,8 @@ using System.Text;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Data.SQLite;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
 
 
 namespace Private_Ethercloset.MVVM.View
@@ -149,6 +153,21 @@ namespace Private_Ethercloset.MVVM.View
                 "珍珠白染剂",
                 "金属铜染剂"
             };
+        private const int CategoryWeapon_Low = 32; //weapons<=32 33=鱼饵
+        private const int CategoryWeapon_High = 84;//>=84. 62=职业水晶。61=骑士武具（剑+盾）
+        private const int CategoryHead = 34;
+        private const int CategoryChest = 35;
+        private const int CategoryHand = 37;
+        private const int CategoryLeg = 36;
+        private const int CategoryFoot = 38;
+        private const int CategoryEar = 41;
+        private const int CategoryNeck = 40;
+        private const int CategoryBracelet = 42;
+        private const int CategoryRing = 43;
+        private const string DefaultIcon = "026107.png";
+        private const int IconNameLength = 10; //6 digits + .png (4)
+        private const int EncryptEnd = 0b1111111111111111;//65535
+
 
         public CreateCardView()
         {
@@ -203,7 +222,38 @@ namespace Private_Ethercloset.MVVM.View
             return binaryData.ToString();
         }
 
-        private Bitmap convertBitmapImagetoBitmap(BitmapImage bitmapImage)
+        //private Bitmap convertBitmapImagetoBitmap(BitmapImage bitmapImage)
+        //{
+        //    using (MemoryStream stream = new MemoryStream())
+        //    {
+        //        // Create a PNG bitmap encoder and save the BitmapImage to the stream
+        //        PngBitmapEncoder encoder = new PngBitmapEncoder();
+        //        encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+        //        encoder.Save(stream);
+
+        //        // Convert the stream to a Bitmap
+        //        return new Bitmap(stream);
+        //    }
+        //}
+
+        //convert bitmapimage to bitmap, ensuring pixel format = 32bpp
+        //Is necessary to use the optimized decrypt function.
+        private Bitmap convertBitmapImageToBitmap_32bpp(BitmapImage bitmapImage)
+        {
+            // Create a new Bitmap with the desired pixel format (32bpp ARGB)
+            Bitmap bitmap32bpp = new Bitmap(bitmapImage.PixelWidth, bitmapImage.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            using (Graphics g = Graphics.FromImage(bitmap32bpp))
+            {
+                // Draw the BitmapImage onto the Bitmap
+                g.DrawImage(BitmapImageToBitmap(bitmapImage), new Rectangle(0, 0, bitmap32bpp.Width, bitmap32bpp.Height));
+            }
+
+            return bitmap32bpp; // Return the new 32bpp bitmap
+        }
+
+        // Helper method to convert BitmapImage to Bitmap
+        private Bitmap BitmapImageToBitmap(BitmapImage bitmapImage)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -211,8 +261,9 @@ namespace Private_Ethercloset.MVVM.View
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
                 encoder.Save(stream);
+                stream.Seek(0, SeekOrigin.Begin); // Reset the stream position for reading
 
-                // Convert the stream to a Bitmap
+                // Convert the stream to a Bitmap (but discard the result)
                 return new Bitmap(stream);
             }
         }
@@ -250,12 +301,17 @@ namespace Private_Ethercloset.MVVM.View
                 indices.Add(databaseHelper.GetItemIdByName(EarEntry.Text));
                 indices.Add(databaseHelper.GetItemIdByName(NeckEntry.Text));
                 indices.Add(databaseHelper.GetItemIdByName(BraceletEntry.Text));
-                indices.Add(databaseHelper.GetItemIdByName(FootEntry.Text));
+                //indices.Add(databaseHelper.GetItemIdByName(FootEntry.Text));
                 indices.Add(databaseHelper.GetItemIdByName(Ring1Entry.Text));
                 indices.Add(databaseHelper.GetItemIdByName(Ring2Entry.Text));
 
+                indices.Add(EncryptEnd);
 
-                Bitmap bitmap = convertBitmapImagetoBitmap(_image);
+                //view debug text
+                Debug.WriteLine("Save Button clicked: List of indices: " + string.Join(", ", indices));
+                
+                //
+                Bitmap bitmap = convertBitmapImageToBitmap_32bpp(_image);
 
 
                 string binaryData = ConvertIndicesToBinary(indices);
@@ -311,17 +367,20 @@ namespace Private_Ethercloset.MVVM.View
             }
         }
 
-        private List<string> PerformFuzzySearch(string searchTerm)
+        //fuzzy search in db w/ category
+        private List<string> PerformFuzzySearch(string searchTerm, int itemCategory)
         {
             var results = new List<string>();
-
-            string query = "SELECT name FROM items WHERE name LIKE @searchTerm";
+            //string query = "SELECT name FROM items WHERE name LIKE @searchTerm"; //no category version
+            string query = "SELECT name FROM items WHERE name LIKE @searchTerm AND ItemUICategoryID = @itemCategory";
             using (var connection = new DatabaseHelper().GetConnection())
             {
                 connection.Open();
                 using (var command = new SQLiteCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@searchTerm", "%" + searchTerm + "%");
+
+                    command.Parameters.AddWithValue("@itemCategory", itemCategory);//limit category
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -334,6 +393,115 @@ namespace Private_Ethercloset.MVVM.View
             }
 
             return results;
+        }
+
+        //fuzzy search weapons
+        //weapon category range(10/10/2024): <=32 or >= 84. 
+        private List<string> PerformFuzzySearchWeapon(string searchTerm)
+        {
+            var results = new List<string>();
+
+            string query = "SELECT name FROM items WHERE name LIKE @searchTerm AND" +
+                " (ItemUICategoryID <= @WeaponCategoryLow OR ItemUICategoryID >= @WeaponCategoryHigh)";
+
+            using (var connection = new DatabaseHelper().GetConnection())
+            {
+                connection.Open();
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@searchTerm", "%" + searchTerm + "%");
+
+                    command.Parameters.AddWithValue("@WeaponCategoryLow", CategoryWeapon_Low);//
+
+                    command.Parameters.AddWithValue("@WeaponCategoryHigh", CategoryWeapon_High);//
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            results.Add(reader["Name"].ToString());
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        //get icon path from database
+        private string GetIconPathFromDatabase(string itemName, int itemCategory)
+        {
+            string iconPath = null;
+
+            // change icon during fuzzy search. 
+            string query = "SELECT Icon FROM items WHERE name LIKE @itemName AND ItemUICategoryID = @itemCategory LIMIT 1";  
+
+            using (var connection = new DatabaseHelper().GetConnection())
+            {
+                connection.Open();
+
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@itemName", "" + itemName + "");
+                    command.Parameters.AddWithValue("@itemCategory", itemCategory);
+                    
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            iconPath = reader["Icon"].ToString();  
+                        }
+                    }
+                }
+            }
+
+            //if found, adjust to actual path. The last 10 chars should be the actual icon name
+            if (!string.IsNullOrWhiteSpace(iconPath) && iconPath.Length >= IconNameLength)
+            {
+                return Path.Combine(DirectoryManager.getIconsRootPath(), iconPath.Substring(iconPath.Length - 10));
+            }
+
+            //else return default icon path (礼物盒
+            return Path.Combine(DirectoryManager.getIconsRootPath(), DefaultIcon);
+        }
+
+        //get icon path from database
+        private string GetWeaponIconPathFromDatabase(string itemName)
+        {
+            string iconPath = null;
+
+            // change icon during fuzzy search. weapon version.
+            string query = "SELECT name, Icon FROM items WHERE name LIKE @itemName AND " +
+                "(ItemUICategoryID <= @WeaponCategoryLow OR ItemUICategoryID >= @WeaponCategoryHigh) LIMIT 1";
+
+
+            using (var connection = new DatabaseHelper().GetConnection())
+            {
+                connection.Open();
+
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@itemName", "" + itemName + "");
+                    command.Parameters.AddWithValue("@WeaponCategoryLow", CategoryWeapon_Low);//
+                    command.Parameters.AddWithValue("@WeaponCategoryHigh", CategoryWeapon_High);//
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            iconPath = reader["Icon"].ToString();
+                        }
+                    }
+                }
+            }
+
+            //if found, adjust to actual path. The last 10 chars should be the actual icon name
+            if (!string.IsNullOrWhiteSpace(iconPath) && iconPath.Length >= IconNameLength)
+            {
+                return Path.Combine(DirectoryManager.getIconsRootPath(), iconPath.Substring(iconPath.Length - 10));
+            }
+
+            //else return default icon path (礼物盒
+            return Path.Combine(DirectoryManager.getIconsRootPath(), DefaultIcon);
         }
 
         private void WeaponSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -357,9 +525,19 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = WeaponEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                //var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearchWeapon(searchTerm);
                 WeaponSearchResults.ItemsSource = results;
                 WeaponSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetWeaponIconPathFromDatabase(searchTerm);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    WeaponIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -368,6 +546,7 @@ namespace Private_Ethercloset.MVVM.View
             }
         }
 
+        
         private void HeadSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Check if the ComboBox has a selected item
@@ -389,9 +568,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = HeadEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryHead);
                 HeadSearchResults.ItemsSource = results;
                 HeadSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryHead);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    HeadIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -421,9 +609,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = ChestEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryChest);
                 ChestSearchResults.ItemsSource = results;
                 ChestSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryChest);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    ChestIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -453,9 +650,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = HandEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryHand);
                 HandSearchResults.ItemsSource = results;
                 HandSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryHand);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    HandIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -485,9 +691,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = LegEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryLeg);
                 LegSearchResults.ItemsSource = results;
                 LegSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryLeg);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    LegIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -517,9 +732,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = FootEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryFoot);
                 FootSearchResults.ItemsSource = results;
                 FootSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryFoot);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    FootIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -549,9 +773,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = EarEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryEar);
                 EarSearchResults.ItemsSource = results;
                 EarSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryEar);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    EarIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -581,9 +814,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = NeckEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryNeck);
                 NeckSearchResults.ItemsSource = results;
                 NeckSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryNeck);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    NeckIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -613,9 +855,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = BraceletEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryBracelet);
                 BraceletSearchResults.ItemsSource = results;
                 BraceletSearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryBracelet);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    BraceletIcon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -645,9 +896,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = Ring1Entry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryRing);
                 Ring1SearchResults.ItemsSource = results;
                 Ring1SearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryRing);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    Ring1Icon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {
@@ -677,9 +937,18 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = Ring2Entry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm);
+                var results = PerformFuzzySearch(searchTerm, CategoryRing);
                 Ring2SearchResults.ItemsSource = results;
                 Ring2SearchResults.IsDropDownOpen = true;
+
+                //get icon
+                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryRing);
+
+                if (!string.IsNullOrEmpty(iconPath))
+                {
+                    Ring2Icon.Source = new BitmapImage(new Uri(iconPath, UriKind.RelativeOrAbsolute));
+                }
+                //else do nothing -- GetIconPathFromDatabase will generate a default when name is invalid
             }
             else
             {

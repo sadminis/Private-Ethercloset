@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Private_Ethercloset.MVVM.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +24,9 @@ namespace Private_Ethercloset.MVVM.View
     /// </summary>
     public partial class LockerView : UserControl
     {
+        private const int EncryptEnd = 0b1111111111111111;//65535
+
+
         private List<string> items = new List<string>
             {
                 "无染色",
@@ -150,11 +156,12 @@ namespace Private_Ethercloset.MVVM.View
                 "珍珠白染剂",
                 "金属铜染剂"
             };
+
+
         public LockerView()
         {
             InitializeComponent();
         }
-
 
         public List<int> ExtractIndicesFromImage(Bitmap bitmap)
         {
@@ -175,12 +182,12 @@ namespace Private_Ethercloset.MVVM.View
             }
 
             // Convert binary string to integers
-            // Assuming each integer is stored as 32 bits (4 bytes)
-            for (int i = 0; i < binaryData.Length; i += 32)
+            // Assuming each integer is stored as 16 bits (2 bytes)
+            for (int i = 0; i < binaryData.Length; i += 16)
             {
-                if (i + 32 <= binaryData.Length)
+                if (i + 16 <= binaryData.Length)
                 {
-                    string byteString = binaryData.Substring(i, 32);
+                    string byteString = binaryData.Substring(i, 16);
                     int index = Convert.ToInt32(byteString, 2); // Convert binary to integer
                     indices.Add(index);
                 }
@@ -188,5 +195,147 @@ namespace Private_Ethercloset.MVVM.View
 
             return indices;
         }
+
+        //significantly optimized performance by locking pixels. However image will have to be 32bpp or there will be an error
+        //32bpp is ensured in createCardView functions
+        public List<int> ExtractIndicesFromImage_Optimized(Bitmap bitmap)
+        {
+            List<int> indices = new List<int>();
+            StringBuilder binaryData = new StringBuilder();
+
+            // Lock the bitmap's bits.
+            System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            System.Drawing.Imaging.BitmapData bmpData = bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+            // Get the address of the first line.
+            IntPtr ptr = bmpData.Scan0;
+
+            // Declare an array to hold the bytes of the bitmap.
+            int bytes = Math.Abs(bmpData.Stride) * bitmap.Height;
+            byte[] rgbValues = new byte[bytes];
+
+            // Copy the RGB values into the array.
+            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+            // Example of checking the pixel format
+            var pixelFormat = bitmap.PixelFormat;
+
+            //Iterate through the pixels.
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    int index = (y * bmpData.Stride) + (x * 4); // Assuming 32bpp
+                    
+                    byte red = rgbValues[index + 2]; // Red channel (BGRA format)
+
+                    // Read the LSB of the red channel and append it
+                    binaryData.Append((red & 0x01)); // Get the last bit
+                }
+            }
+
+
+            bitmap.UnlockBits(bmpData); // Unlock the bits
+
+            // Convert binary string to integers
+            for (int i = 0; i < binaryData.Length; i += 16)
+            {
+                if (i + 16 <= binaryData.Length)
+                {
+                    string byteString = binaryData.ToString().Substring(i, 16);
+                    int index = Convert.ToInt32(byteString, 2);
+
+                    //reached the end of list. return
+                    if (index >= EncryptEnd)
+                    {
+                        return indices;
+                    }
+                    indices.Add(index);
+                    
+                }
+            }
+
+            return indices;
+        }
+
+
+        private Bitmap convertBitmapImagetoBitmap(BitmapImage bitmapImage)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                // Create a PNG bitmap encoder and save the BitmapImage to the stream
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                encoder.Save(stream);
+
+                // Convert the stream to a Bitmap
+                return new Bitmap(stream);
+            }
+        }
+
+        
+
+        private void Image_Click(object sender, MouseButtonEventArgs e)
+        {
+
+
+            var image = sender as System.Windows.Controls.Image;
+
+            if (image != null)
+            {
+                Debug.WriteLine("Image clicked");
+
+                // Check if the source is BitmapImage
+                if (image.Source is BitmapImage bitmapImage)
+                {
+                    // Convert BitmapImage to Bitmap
+                    Bitmap imageItem = convertBitmapImagetoBitmap(bitmapImage);
+
+                    // Check if imageItem is null
+                    if (imageItem == null)
+                    {
+                        Debug.WriteLine("imageItem bitmap is null");
+                        return;
+                    }
+
+                    Debug.WriteLine("imageItem bitmap is not null");
+
+
+                    LockerViewModel lockerViewModel = (LockerViewModel)DataContext;
+                    if (lockerViewModel == null)
+                    {
+                        Debug.WriteLine("Cannot get LockerViewModel reference");
+                        return;
+                    }
+
+                    lockerViewModel.NavigateToDecrypt(bitmapImage);
+
+
+                    // Call your method to extract indices
+                    //var listOfIndices = ExtractIndicesFromImage_Optimized(imageItem);
+                    //Debug.WriteLine("List of indices: " + string.Join(", ", listOfIndices));
+                }
+                else
+                {
+                    Debug.WriteLine("Image source is not a BitmapImage.");
+                }
+                Debug.WriteLine("End execution");
+            }
+
+            
+
+
+
+        }
+
+
+        
+
     }
 }
+/* 10/11/2024
+discarded version
+lock to SIGNIFICANTLY increase process speed
+however this method assumes 32bpp and doesn't work in other pixel format
+
+ */

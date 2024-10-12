@@ -68,6 +68,12 @@
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding CreateCardViewCommand}"/>
 
+                <RadioButton Content="解析幻化卡"
+                             Height="70"
+                             Foreground="white"
+                             FontSize="18"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding DecryptCardViewCommand}"/>
             </StackPanel>
 
             <TextBox Height="60"

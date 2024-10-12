@@ -30,6 +30,13 @@ namespace Private_Ethercloset.MVVM.Model
             return imagesDirectory;
         }
 
+        public static string getIconsRootPath() 
+        {
+            //
+            string iconsDirectory = Path.Combine(Environment.CurrentDirectory, "Resources");
+            return Path.Combine(iconsDirectory, "Icons"); ;
+        }
+
         public static string? ImportPicture()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -74,7 +81,7 @@ namespace Private_Ethercloset.MVVM.Model
         public static string getDatabasePath()
         {
             string appDataPath = Path.Combine(Environment.CurrentDirectory, "Resources");
-            return Path.Combine(appDataPath, "data.db");
+            return Path.Combine(appDataPath, "items.db");
         }
     }
 }

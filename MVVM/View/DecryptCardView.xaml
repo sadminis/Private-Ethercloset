@@ -1,0 +1,597 @@
+﻿<UserControl x:Class="Private_Ethercloset.MVVM.View.DecryptCardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Private_Ethercloset.MVVM.View"
+             xmlns:viewModel="clr-namespace:Private_Ethercloset.MVVM.ViewModel"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="750 " d:DesignWidth="1350">
+
+    <UserControl.DataContext>
+        <viewModel:DecryptCardViewModel />
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+
+
+            <Image x:Name="ImageDisplay" Source="/Images/Placeholder.png" />
+
+            <StackPanel Grid.Column="0"
+                        Grid.Row="1">
+                <Button Content="选择图片"
+                        Background="#3A6D8C"
+                        Foreground="White"
+                        Style="{StaticResource UploadButtonTheme}"
+                        Margin="32,27,32,5" 
+                        Height="50"
+                        Click="UploadButton_Click"/>
+
+            </StackPanel>
+
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="装备详情"
+                       Style="{StaticResource Catagory}"
+                       Grid.Column="0"
+                       Grid.Row="0"/>
+
+            <!-- Weapon -->
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <!-- Image takes minimal space required -->
+                    <ColumnDefinition Width="*" />
+                    <!-- Left available space -->
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0">
+                    <!-- Image -->
+                    <Image x:Name="WeaponIcon"
+                       Grid.Column="0" Grid.Row="1"
+                       Width="50" Height="50"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0,0,0,0"
+                       Source="/Resources/Icons/026107.png"/>
+                    <!-- Default = 礼物盒 /Resources/Icons/026107.png -->
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Name Block for Top Half -->
+                    <TextBlock Text="武器名称八个字字" 
+                               x:Name="WeaponName"
+                               Margin="50,0,0,0"
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Bottom" 
+                       FontSize="20" />
+
+                    <!-- Dye info (2 cols) for Bottom Half -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <!-- Left Column -->
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <!-- Right Column -->
+
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="WeaponDyeIcon1"
+                           Grid.Column="0"
+                           Width="10" Height="50"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="0,0,0,0"
+                           Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂1" 
+                           x:Name="WeaponDyeText1"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           FontSize="14" 
+                           Grid.Column="1" />
+                        <Image x:Name="WeaponDyeIcon2"
+                           Grid.Column="2"
+                           Width="10" Height="10"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="0,0,0,0"
+                           Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂2" 
+                           x:Name="WeaponDyeText2"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           FontSize="14" 
+                           Grid.Column="3" />
+                    </Grid>
+                </Grid>
+
+            </Grid>
+            
+            <!-- Head -->
+            <Grid Grid.Column="0" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Image x:Name="HeadIcon"
+               Width="50" Height="50"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="/Resources/Icons/026107.png"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="头盔名称八个字" 
+                   x:Name="HeadName"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   FontSize="20" />
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="HeadDyeIcon1"
+                   Width="10" Height="50"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂1" 
+                       x:Name="HeadDyeText1"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="1" />
+                        <Image x:Name="HeadDyeIcon2"
+                               Grid.Column="2"
+                   Width="10" Height="10"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂2" 
+                       x:Name="HeadDyeText2"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="3" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- Chest -->
+            <Grid Grid.Column="0" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Image x:Name="ChestIcon"
+               Width="50" Height="50"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="/Resources/Icons/026107.png"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="胸甲名称八个字" 
+                   x:Name="ChestName"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   FontSize="20" />
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="ChestDyeIcon1"
+                   Width="10" Height="50"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂1" 
+                       x:Name="ChestDyeText1"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="1" />
+                        <Image x:Name="ChestDyeIcon2"
+                               Grid.Column="2"
+                   Width="10" Height="10"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂2" 
+                       x:Name="ChestDyeText2"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="3" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- Hand -->
+            <Grid Grid.Column="0" Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Image x:Name="HandIcon"
+               Width="50" Height="50"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="/Resources/Icons/026107.png"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="手套名称八个字" 
+                   x:Name="HandName"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   FontSize="20" />
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="HandDyeIcon1"
+                   Width="10" Height="50"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂1" 
+                       x:Name="HandDyeText1"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="1" />
+                        <Image x:Name="HandDyeIcon2"
+                               Grid.Column="2"
+                   Width="10" Height="10"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂2" 
+                       x:Name="HandDyeText2"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="3" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- Leg -->
+            <Grid Grid.Column="0" Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Image x:Name="LegIcon"
+               Width="50" Height="50"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="/Resources/Icons/026107.png"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="腿甲名称八个字" 
+                   x:Name="LegName"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   FontSize="20" />
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="LegDyeIcon1"
+                   Width="10" Height="50"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂1" 
+                       x:Name="LegDyeText1"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="1" />
+                        <Image x:Name="LegDyeIcon2"
+                               Grid.Column="2"
+                   Width="10" Height="10"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂2" 
+                       x:Name="LegDyeText2"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="3" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- Foot -->
+            <Grid Grid.Column="0" Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Image x:Name="FootIcon"
+               Width="50" Height="50"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="/Resources/Icons/026107.png"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="鞋子名称八个字" 
+                   x:Name="FootName"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Bottom" 
+                   FontSize="20" />
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="FootDyeIcon1"
+                   Width="10" Height="50"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂1" 
+                       x:Name="FootDyeText1"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="1" />
+                        <Image x:Name="FootDyeIcon2"
+                               Grid.Column="2"
+                   Width="10" Height="10"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="/Resources/Icons/026107.png"/>
+                        <TextBlock Text="染剂2" 
+                       x:Name="FootDyeText2"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="14" 
+                       Grid.Column="3" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- Ear -->
+            <Grid Grid.Column="1" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <!-- Image takes minimal space required -->
+                    <ColumnDefinition Width="*" />
+                    <!-- Left available space -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Image -->
+                <Image x:Name="EarIcon"
+                       Grid.Column="0" Grid.Row="1"
+                       Width="50" Height="50"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0,0,0,0"
+                       Source="/Resources/Icons/026107.png"/>
+                <!-- Default = 礼物盒 026107.png -->
+
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="1"
+                            Grid.Row="1">
+                    <TextBlock Text="耳坠名字" 
+                            x:Name="EarName"
+                            Margin="50,0,0,0"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            FontSize="20" />
+
+                </StackPanel>
+            </Grid>
+
+            <!-- Neck -->
+            <Grid Grid.Column="1" Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="NeckIcon"
+           Width="50" Height="50"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Center"
+           Source="/Resources/Icons/026107.png"/>
+
+                <StackPanel Orientation="Horizontal"
+                Grid.Column="1">
+                    <TextBlock Text="项链名字" 
+                   x:Name="NeckName"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="20" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Bracelet -->
+            <Grid Grid.Column="1" Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="BraceletIcon"
+           Width="50" Height="50"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Center"
+           Source="/Resources/Icons/026107.png"/>
+
+                <StackPanel Orientation="Horizontal"
+                Grid.Column="1">
+                    <TextBlock Text="手镯名字" 
+                   x:Name="BraceletName"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="20" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Ring1 -->
+            <Grid Grid.Column="1" Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="Ring1Icon"
+           Width="50" Height="50"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Center"
+           Source="/Resources/Icons/026107.png"/>
+
+                <StackPanel Orientation="Horizontal"
+                Grid.Column="1">
+                    <TextBlock Text="戒指1名字" 
+                   x:Name="Ring1Name"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="20" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Ring2 -->
+            <Grid Grid.Column="1" Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="Ring2Icon"
+           Width="50" Height="50"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Center"
+           Source="/Resources/Icons/026107.png"/>
+
+                <StackPanel Orientation="Horizontal"
+                Grid.Column="1">
+                    <TextBlock Text="戒指2名字" 
+                   x:Name="Ring2Name"
+                   Margin="50,0,0,0"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="20" />
+                </StackPanel>
+            </Grid>
+
+
+
+
+
+
+
+
+
+
+        </Grid>
+
+    </Grid>
+</UserControl>

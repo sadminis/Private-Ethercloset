@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Private_Ethercloset.Core;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +22,9 @@ namespace Private_Ethercloset
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        
+
         public MainWindow()
         {
             InitializeComponent();

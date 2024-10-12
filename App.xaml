@@ -30,7 +30,11 @@
             <DataTemplate DataType="{x:Type viewModel:CreateCardViewModel}">
                 <view:CreateCardView/>
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type viewModel:DecryptCardViewModel}">
+                <view:DecryptCardView/>
+            </DataTemplate>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
