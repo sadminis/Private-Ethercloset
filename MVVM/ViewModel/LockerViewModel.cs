@@ -1,23 +1,17 @@
 ﻿using Private_Ethercloset.MVVM.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Private_Ethercloset.MVVM.ViewModel
 {
     public class LockerViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<BitmapImage> Images { get; private set; }
+        public ObservableCollection<Image> Images { get; private set; }
         private string galleryDirectory;
         private MainViewModel _MainViewModel;
 
@@ -25,7 +19,7 @@ namespace Private_Ethercloset.MVVM.ViewModel
         {
             galleryDirectory = DirectoryManager.getGalleryDirectory();
 
-            Images = new ObservableCollection<BitmapImage>();
+            Images = new ObservableCollection<Image>();
 
             LoadImagesFromDirectory();
 
@@ -36,7 +30,7 @@ namespace Private_Ethercloset.MVVM.ViewModel
         {
             galleryDirectory = DirectoryManager.getGalleryDirectory();
 
-            Images = new ObservableCollection<BitmapImage>();
+            Images = new ObservableCollection<Image>();
             _MainViewModel = mainViewModel;
             LoadImagesFromDirectory();
 
@@ -55,15 +49,31 @@ namespace Private_Ethercloset.MVVM.ViewModel
 
                 if (imagePath != null)
                 {
-                    Images.Add(new BitmapImage(new Uri(imagePath)));
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+
+                    // Create an Image control and set its properties
+                    var imageControl = new System.Windows.Controls.Image
+                    {
+                        Source = bitmap,
+                        Width = 100,
+                        Height = 100,
+                        Stretch = Stretch.UniformToFill,
+                        Tag = imagePath // Store the file path in the Tag property
+                    };
+
+                    // Add the Image control to the ItemsControl
+                    Images.Add(imageControl);
                 }
             }
-
         }
 
-        public void NavigateToDecrypt(BitmapImage image)
+        public void NavigateToDecrypt(SteganoCard steganoCard)
         {
-            _MainViewModel.NavigateToDecrypt(image);
+            _MainViewModel.NavigateToDecrypt(steganoCard);
         }
 
 

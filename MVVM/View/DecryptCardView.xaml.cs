@@ -27,6 +27,7 @@ namespace Private_Ethercloset.MVVM.View
     public partial class DecryptCardView : UserControl
     {
         private BitmapImage? _image;
+        SteganoCard steganoCard;
 
         private const int EncryptEnd = 0b1111111111111111;//65535
         private const int leagalIndicesLength = 23;
@@ -41,15 +42,13 @@ namespace Private_Ethercloset.MVVM.View
         public DecryptCardView()
         {
             InitializeComponent();
-
             ResetAllUI();
         }
-        public DecryptCardView(BitmapImage importedCard)
+        public DecryptCardView(SteganoCard steganoCard)
         {
             InitializeComponent();
-            SetupImage(importedCard);
-
-
+            this.steganoCard = steganoCard;
+            SetupImage(steganoCard.getImageInCard());
         }
 
         public void SetupImage(BitmapImage image)

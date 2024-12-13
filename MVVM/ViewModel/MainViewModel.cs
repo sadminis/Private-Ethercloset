@@ -1,4 +1,5 @@
 ﻿using Private_Ethercloset.Core;
+using Private_Ethercloset.MVVM.Model;
 using Private_Ethercloset.MVVM.View;
 using System;
 using System.Collections.Generic;
@@ -74,9 +75,9 @@ namespace Private_Ethercloset.MVVM.ViewModel
 
         }
 
-        public void NavigateToDecrypt(BitmapImage image)
+        public void NavigateToDecrypt(SteganoCard steganoCard)
         {
-            DecryptCardView decryptCardView = new DecryptCardView(image);
+            DecryptCardView decryptCardView = new DecryptCardView(steganoCard);
             CurrentView = decryptCardView;
         }
 

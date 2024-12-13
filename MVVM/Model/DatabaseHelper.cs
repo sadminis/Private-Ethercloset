@@ -9,7 +9,6 @@ public class DatabaseHelper
     private string connectionString;
     private string databasePath = DirectoryManager.getDatabasePath();
     private const string DefaultIcon = "026107.png";//礼物盒
-
     private const int IconNameLength = 10; //6 digits + .png (4)
 
     private List<string> Dyes = new List<string>
@@ -269,5 +268,29 @@ public class DatabaseHelper
     {
         //not implemented yet
         return Path.Combine(DirectoryManager.getIconsRootPath(), DefaultIcon);
+    }
+
+    public int getDyeIDByName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return 0;
+        }
+        return Dyes.IndexOf(name);
+    }
+
+    public List<String> getDyes()
+    {
+        return Dyes;
+    }
+
+    public int getIconNameLength()
+    {
+        return IconNameLength;
+    }
+
+    public string getDefaultIcon()
+    {
+        return DefaultIcon;
     }
 }

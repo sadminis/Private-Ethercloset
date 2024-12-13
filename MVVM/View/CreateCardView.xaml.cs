@@ -2,18 +2,19 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
 using System.Drawing;
 using Private_Ethercloset.MVVM.Model;
 using System.Windows.Media.Imaging;
-using System;
-using static MaterialDesignThemes.Wpf.Theme;
 using System.Text;
 using System.IO;
-using System.Drawing.Imaging;
 using System.Data.SQLite;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Diagnostics;
+using SixLabors.ImageSharp.PixelFormats;
+using SteganographyLibrary;
+using ImageSharpImage = SixLabors.ImageSharp.Image;
+using Xunit;
+using SixLabors.ImageSharp;
+using Microsoft.SqlServer.Server;
 
 
 namespace Private_Ethercloset.MVVM.View
@@ -23,348 +24,140 @@ namespace Private_Ethercloset.MVVM.View
     /// </summary>
     public partial class CreateCardView : UserControl
     {
-        private BitmapImage? _image;
-        private List<string> items = new List<string>
-            {
-                "无染色",
-                "----------------",
-                "素雪白染剂",
-                "苍白灰染剂",
-                "古菩灰染剂",
-                "石板灰染剂",
-                "木炭灰染剂",
-                "煤烟黑染剂",
-                "----------------",
-                "玫瑰粉染剂",
-                "丁香紫染剂",
-                "罗兰莓染剂",
-                "卫月红染剂",
-                "铁锈红染剂",
-                "果酒红染剂",
-                "珊瑚粉染剂",
-                "鲜血红染剂",
-                "鲑鱼粉染剂",
-                "宝石红染剂",
-                "樱桃粉染剂",
-                "----------------",
-                "日落橙染剂",
-                "台地红染剂",
-                "树皮棕染剂",
-                "巧克力染剂",
-                "铁锈棕染剂",
-                "钴铁棕染剂",
-                "软木棕染剂",
-                "卢恩棕染剂",
-                "奥猴棕染剂",
-                "山羊棕染剂",
-                "南瓜橙染剂",
-                "橡果棕染剂",
-                "果园棕染剂",
-                "山栗棕染剂",
-                "哥布林染剂",
-                "页岩棕染剂",
-                "鼹鼠棕染剂",
-                "沃土棕染剂",
-                "----------------",
-                "骸骨白染剂",
-                "黄沙棕染剂",
-                "沙漠黄染剂",
-                "蜂蜜黄染剂",
-                "玉米黄染剂",
-                "猛豹黄染剂",
-                "奶油黄染剂",
-                "日影黄染剂",
-                "萄干棕染剂",
-                "丝雀黄染剂",
-                "香草黄染剂",
-                "----------------",
-                "泥沼绿染剂",
-                "妖精绿染剂",
-                "青柠绿染剂",
-                "苔藓绿染剂",
-                "牧草绿染剂",
-                "橄榄绿染剂",
-                "沼泽绿染剂",
-                "苹果绿染剂",
-                "仙人掌染剂",
-                "猎人绿染剂",
-                "口花绿染剂",
-                "金龟绿染剂",
-                "地神绿染剂",
-                "深林绿染剂",
-                "天上蓝染剂",
-                "绿松蓝染剂",
-                "魔花绿染剂",
-                "----------------",
-                "寒冰蓝染剂",
-                "天空蓝染剂",
-                "海雾蓝染剂",
-                "孔雀蓝染剂",
-                "罗海蓝染剂",
-                "腐尸蓝染剂",
-                "青磷蓝染剂",
-                "靛青蓝染剂",
-                "油墨蓝染剂",
-                "盗龙蓝染剂",
-                "东洲蓝染剂",
-                "风暴蓝染剂",
-                "虚空蓝染剂",
-                "皇室蓝染剂",
-                "午夜蓝染剂",
-                "阴影蓝染剂",
-                "深渊蓝染剂",
-                "龙骑蓝染剂",
-                "松石蓝染剂",
-                "----------------",
-                "薰衣草染剂",
-                "忧郁紫染剂",
-                "醋栗紫染剂",
-                "鸢尾紫染剂",
-                "葡萄紫染剂",
-                "莲花粉染剂",
-                "蜂鸟粉染剂",
-                "仙子梅染剂",
-                "帝王紫染剂",
-                "丝雀黄染剂",
-                "香草黄染剂",
-                "----------------",
-                "无瑕白染剂",
-                "煤玉黑染剂",
-                "柔彩粉染剂",
-                "黑暗红染剂",
-                "黑暗棕染剂",
-                "柔彩绿染剂",
-                "黑暗绿染剂",
-                "柔彩蓝染剂",
-                "黑暗蓝染剂",
-                "柔彩紫染剂",
-                "黑暗紫染剂",
-                "----------------",
-                "闪耀银染剂",
-                "闪耀金染剂",
-                "金属红染剂",
-                "金属橙染剂",
-                "金属黄染剂",
-                "金属绿染剂",
-                "金属蓝染剂",
-                "金属靛染剂",
-                "金属紫染剂",
-                "炮铜黑染剂",
-                "珍珠白染剂",
-                "金属铜染剂"
-            };
-        private const int CategoryWeapon_Low = 32; //weapons<=32 33=鱼饵
-        private const int CategoryWeapon_High = 84;//>=84. 62=职业水晶。61=骑士武具（剑+盾）
-        private const int CategoryHead = 34;
-        private const int CategoryChest = 35;
-        private const int CategoryHand = 37;
-        private const int CategoryLeg = 36;
-        private const int CategoryFoot = 38;
-        private const int CategoryEar = 41;
-        private const int CategoryNeck = 40;
-        private const int CategoryBracelet = 42;
-        private const int CategoryRing = 43;
-        private const string DefaultIcon = "026107.png";
-        private const int IconNameLength = 10; //6 digits + .png (4)
-        private const int EncryptEnd = 0b1111111111111111;//65535
+        private Card card;
+        private DatabaseHelper databaseHelper = new DatabaseHelper();
 
 
         public CreateCardView()
         {
             InitializeComponent();
-            PopulateComboBox();
+            BindDyesToComboBox();
         }
 
-        private void PopulateComboBox()
+        private void BindDyesToComboBox()
         {
-            // Create a list of items
+            List<string> dyes = databaseHelper.getDyes();
 
-            // Set the ComboBox's ItemsSource to the list of items
-            WeaponDye1.ItemsSource = items;
-            WeaponDye2.ItemsSource = items;
-            HeadDye1.ItemsSource = items;
-            HeadDye2.ItemsSource = items;
-            ChestDye1.ItemsSource= items;
-            ChestDye2.ItemsSource = items;
-            HandDye1.ItemsSource = items;
-            HandDye2.ItemsSource = items;
-            LegDye1.ItemsSource = items;
-            LegDye2.ItemsSource = items;
-            FootDye1.ItemsSource = items;
-            FootDye2.ItemsSource = items;
+            WeaponDye1.ItemsSource = dyes;
+            WeaponDye2.ItemsSource = dyes;
+            HeadDye1.ItemsSource = dyes;
+            HeadDye2.ItemsSource = dyes;
+            ChestDye1.ItemsSource = dyes;
+            ChestDye2.ItemsSource = dyes;
+            HandDye1.ItemsSource = dyes;
+            HandDye2.ItemsSource = dyes;
+            LegDye1.ItemsSource = dyes;
+            LegDye2.ItemsSource = dyes;
+            FootDye1.ItemsSource = dyes;
+            FootDye2.ItemsSource = dyes;
         }
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             var imagePath = DirectoryManager.ImportPicture();
-            if (imagePath != null) {
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(imagePath);
-                bitmap.EndInit();
-                bitmap.Freeze(); // Optionally freeze the bitmap for performance
+            Assert.NotNull(imagePath);
 
-                // Set the ImageSource of the Image control
-                ImageDisplay.Source = bitmap;
-                _image = bitmap;
-            }
-            
+            card = new Card(imagePath);
+
+            ImageDisplay.Source = card.getImage();
         }
 
-        private static string ConvertIndicesToBinary(List<int> indices)
-        {
-            StringBuilder binaryData = new StringBuilder();
-            foreach (int index in indices)
-            {
-                // Convert each integer to its binary representation (16 bits per integer)
-                binaryData.Append(Convert.ToString(index, 2).PadLeft(16, '0'));
-            }
-            return binaryData.ToString();
-        }
-
-        //private Bitmap convertBitmapImagetoBitmap(BitmapImage bitmapImage)
-        //{
-        //    using (MemoryStream stream = new MemoryStream())
-        //    {
-        //        // Create a PNG bitmap encoder and save the BitmapImage to the stream
-        //        PngBitmapEncoder encoder = new PngBitmapEncoder();
-        //        encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-        //        encoder.Save(stream);
-
-        //        // Convert the stream to a Bitmap
-        //        return new Bitmap(stream);
-        //    }
-        //}
-
-        //convert bitmapimage to bitmap, ensuring pixel format = 32bpp
-        //Is necessary to use the optimized decrypt function.
-        private Bitmap convertBitmapImageToBitmap_32bpp(BitmapImage bitmapImage)
-        {
-            // Create a new Bitmap with the desired pixel format (32bpp ARGB)
-            Bitmap bitmap32bpp = new Bitmap(bitmapImage.PixelWidth, bitmapImage.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            using (Graphics g = Graphics.FromImage(bitmap32bpp))
-            {
-                // Draw the BitmapImage onto the Bitmap
-                g.DrawImage(BitmapImageToBitmap(bitmapImage), new Rectangle(0, 0, bitmap32bpp.Width, bitmap32bpp.Height));
-            }
-
-            return bitmap32bpp; // Return the new 32bpp bitmap
-        }
-
-        // Helper method to convert BitmapImage to Bitmap
-        private Bitmap BitmapImageToBitmap(BitmapImage bitmapImage)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                // Create a PNG bitmap encoder and save the BitmapImage to the stream
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-                encoder.Save(stream);
-                stream.Seek(0, SeekOrigin.Begin); // Reset the stream position for reading
-
-                // Convert the stream to a Bitmap (but discard the result)
-                return new Bitmap(stream);
-            }
-        }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_image != null) 
+            if (card.hasImage())
             {
-                DatabaseHelper databaseHelper = new DatabaseHelper();
-                List<int> indices = new List<int>();
-                indices.Add(databaseHelper.GetItemIdByName(WeaponEntry.Text));
-                indices.Add(items.IndexOf(WeaponDye1.SelectedItem.ToString()));
-                indices.Add(items.IndexOf(WeaponDye2.SelectedItem.ToString()));
-                
-                indices.Add(databaseHelper.GetItemIdByName(HeadEntry.Text));
-                indices.Add(items.IndexOf(HeadDye1.SelectedItem.ToString()));
-                indices.Add(items.IndexOf(HeadDye2.SelectedItem.ToString()));
-
-                indices.Add(databaseHelper.GetItemIdByName(ChestEntry.Text));
-                indices.Add(items.IndexOf(ChestDye1.SelectedItem.ToString()));
-                indices.Add(items.IndexOf(ChestDye2.SelectedItem.ToString()));
-
-                indices.Add(databaseHelper.GetItemIdByName(HandEntry.Text));
-                indices.Add(items.IndexOf(HandDye1.SelectedItem.ToString()));
-                indices.Add(items.IndexOf(HandDye2.SelectedItem.ToString()));
-
-                indices.Add(databaseHelper.GetItemIdByName(LegEntry.Text));
-                indices.Add(items.IndexOf(LegDye1.SelectedItem.ToString()));
-                indices.Add(items.IndexOf(LegDye2.SelectedItem.ToString()));
-
-                indices.Add(databaseHelper.GetItemIdByName(FootEntry.Text));
-                indices.Add(items.IndexOf(FootDye1.SelectedItem.ToString()));
-                indices.Add(items.IndexOf(FootDye2.SelectedItem.ToString()));
-
-                indices.Add(databaseHelper.GetItemIdByName(EarEntry.Text));
-                indices.Add(databaseHelper.GetItemIdByName(NeckEntry.Text));
-                indices.Add(databaseHelper.GetItemIdByName(BraceletEntry.Text));
-                //indices.Add(databaseHelper.GetItemIdByName(FootEntry.Text));
-                indices.Add(databaseHelper.GetItemIdByName(Ring1Entry.Text));
-                indices.Add(databaseHelper.GetItemIdByName(Ring2Entry.Text));
-
-                indices.Add(EncryptEnd);
-
-                //view debug text
-                Debug.WriteLine("Save Button clicked: List of indices: " + string.Join(", ", indices));
-                
-                //
-                Bitmap bitmap = convertBitmapImageToBitmap_32bpp(_image);
-
-
-                string binaryData = ConvertIndicesToBinary(indices);
-
-                if (binaryData.Length > bitmap.Width * bitmap.Height)
-                {
-                    throw new Exception("Data is too large to be embedded in the image.");
-                }
-
-                // Embed the binary data into the image
-                int bitIndex = 0;
-                for (int y = 0; y < bitmap.Height; y++)
-                {
-                    for (int x = 0; x < bitmap.Width; x++)
-                    {
-                        // Get pixel color
-                        Color pixelColor = bitmap.GetPixel(x, y);
-
-                        // Modify the LSB of the red channel to store data
-                        if (bitIndex < binaryData.Length)
-                        {
-                            // Change the LSB of the red channel
-                            int red = pixelColor.R & 0xFE; // Clear the last bit
-                            if (binaryData[bitIndex] == '1')
-                            {
-                                red |= 0x01; // Set the last bit to 1
-                            }
-                            pixelColor = Color.FromArgb(pixelColor.A, red, pixelColor.G, pixelColor.B);
-                            bitmap.SetPixel(x, y, pixelColor);
-                            bitIndex++;
-                        }
-                    }
-                }
-
-                //string outputImagePath = DirectoryManager.getNewLocker();
-                string outputImagePath = Path.Combine(DirectoryManager.getNewLocker(), "front.png");
-
-
-                try
-                {
-                    // Save the modified image as a PNG file
-                    bitmap.Save(outputImagePath, ImageFormat.Png);
-                    MessageBox.Show($"成功保存到衣柜", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error saving image: {ex.Message}\n{ex.StackTrace}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                updateAllEquipments();
+                encryptAndSaveImage();
             }
             else
             {
                 MessageBoxResult result = MessageBox.Show("请上传一张图片", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        private void encryptAndSaveImage()
+        {
+            SteganoCard steganoCard = new SteganoCard(card);
+
+            steganoCard.encrypt();
+            string outputImagePath = getLockerPath();
+            steganoCard.save(outputImagePath);
+        }
+
+        private string getLockerPath()
+        {
+            return Path.Combine(DirectoryManager.getNewLocker(), "front.png");
+        }
+
+        private void updateAllEquipments()
+        {
+            updateWeapon();
+            updateHead();
+            updtaeChest();
+            updateHand();
+            updateLeg();
+            updateFoot();
+            updateEar();
+            updateNeck();
+            updateBracelet();
+            updateRing1();
+            updateRing2();
+        }
+
+        private void updateRing2()
+        {
+            card.changeAccessoryTo(GearType.RING2, Ring2Entry.Text);
+        }
+
+        private void updateRing1()
+        {
+            card.changeAccessoryTo(GearType.RING1, Ring1Entry.Text);
+        }
+
+        private void updateBracelet()
+        {
+            card.changeAccessoryTo(GearType.BRACELET, BraceletEntry.Text);
+        }
+
+        private void updateNeck()
+        {
+            card.changeAccessoryTo(GearType.NECK, NeckEntry.Text);
+        }
+
+        private void updateEar()
+        {
+            card.changeAccessoryTo(GearType.EAR, EarEntry.Text);
+        }
+
+        private void updateFoot()
+        {
+            card.changeBodyEquipmentTo(GearType.FOOT, WeaponEntry.Text, FootDye1.SelectedItem.ToString(), FootDye2.SelectedItem.ToString());
+        }
+
+        private void updateLeg()
+        {
+            card.changeBodyEquipmentTo(GearType.LEG, LegEntry.Text, LegDye1.SelectedItem.ToString(), LegDye2.SelectedItem.ToString());
+        }
+
+        private void updateHand()
+        {
+            card.changeBodyEquipmentTo(GearType.HAND, HandEntry.Text, HandDye1.SelectedItem.ToString(), HandDye2.SelectedItem.ToString());
+        }
+
+        private void updtaeChest()
+        {
+            card.changeBodyEquipmentTo(GearType.CHEST, ChestEntry.Text, ChestDye1.SelectedItem.ToString(), ChestDye2.SelectedItem.ToString());
+        }
+
+        private void updateHead()
+        {
+            card.changeBodyEquipmentTo(GearType.HEAD, HeadEntry.Text, HeadDye1.SelectedItem.ToString(), HeadDye2.SelectedItem.ToString());
+        }
+
+        private void updateWeapon()
+        {
+            card.changeBodyEquipmentTo(GearType.WEAPON, WeaponEntry.Text, WeaponDye1.SelectedItem.ToString(), WeaponDye2.SelectedItem.ToString());
         }
 
         //fuzzy search in db w/ category
@@ -411,9 +204,9 @@ namespace Private_Ethercloset.MVVM.View
                 {
                     command.Parameters.AddWithValue("@searchTerm", "%" + searchTerm + "%");
 
-                    command.Parameters.AddWithValue("@WeaponCategoryLow", CategoryWeapon_Low);//
+                    command.Parameters.AddWithValue("@WeaponCategoryLow", (int)EquipmentCategory.WeaponLow);//
 
-                    command.Parameters.AddWithValue("@WeaponCategoryHigh", CategoryWeapon_High);//
+                    command.Parameters.AddWithValue("@WeaponCategoryHigh", (int)EquipmentCategory.WeaponHigh);//
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -434,7 +227,7 @@ namespace Private_Ethercloset.MVVM.View
             string iconPath = null;
 
             // change icon during fuzzy search. 
-            string query = "SELECT Icon FROM items WHERE name LIKE @itemName AND ItemUICategoryID = @itemCategory LIMIT 1";  
+            string query = "SELECT Icon FROM items WHERE name LIKE @itemName AND ItemUICategoryID = @itemCategory LIMIT 1";
 
             using (var connection = new DatabaseHelper().GetConnection())
             {
@@ -444,25 +237,25 @@ namespace Private_Ethercloset.MVVM.View
                 {
                     command.Parameters.AddWithValue("@itemName", "" + itemName + "");
                     command.Parameters.AddWithValue("@itemCategory", itemCategory);
-                    
+
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            iconPath = reader["Icon"].ToString();  
+                            iconPath = reader["Icon"].ToString();
                         }
                     }
                 }
             }
 
             //if found, adjust to actual path. The last 10 chars should be the actual icon name
-            if (!string.IsNullOrWhiteSpace(iconPath) && iconPath.Length >= IconNameLength)
+            if (!string.IsNullOrWhiteSpace(iconPath) && iconPath.Length >= databaseHelper.getIconNameLength())
             {
                 return Path.Combine(DirectoryManager.getIconsRootPath(), iconPath.Substring(iconPath.Length - 10));
             }
 
             //else return default icon path (礼物盒
-            return Path.Combine(DirectoryManager.getIconsRootPath(), DefaultIcon);
+            return Path.Combine(DirectoryManager.getIconsRootPath(), databaseHelper.getDefaultIcon());
         }
 
         //get icon path from database
@@ -482,8 +275,8 @@ namespace Private_Ethercloset.MVVM.View
                 using (var command = new SQLiteCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@itemName", "" + itemName + "");
-                    command.Parameters.AddWithValue("@WeaponCategoryLow", CategoryWeapon_Low);//
-                    command.Parameters.AddWithValue("@WeaponCategoryHigh", CategoryWeapon_High);//
+                    command.Parameters.AddWithValue("@WeaponCategoryLow", (int)EquipmentCategory.WeaponLow);//
+                    command.Parameters.AddWithValue("@WeaponCategoryHigh", (int)EquipmentCategory.WeaponHigh);//
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
@@ -495,13 +288,13 @@ namespace Private_Ethercloset.MVVM.View
             }
 
             //if found, adjust to actual path. The last 10 chars should be the actual icon name
-            if (!string.IsNullOrWhiteSpace(iconPath) && iconPath.Length >= IconNameLength)
+            if (!string.IsNullOrWhiteSpace(iconPath) && iconPath.Length >= databaseHelper.getIconNameLength())
             {
                 return Path.Combine(DirectoryManager.getIconsRootPath(), iconPath.Substring(iconPath.Length - 10));
             }
 
             //else return default icon path (礼物盒
-            return Path.Combine(DirectoryManager.getIconsRootPath(), DefaultIcon);
+            return Path.Combine(DirectoryManager.getIconsRootPath(), databaseHelper.getDefaultIcon());
         }
 
         private void WeaponSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -546,7 +339,7 @@ namespace Private_Ethercloset.MVVM.View
             }
         }
 
-        
+
         private void HeadSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Check if the ComboBox has a selected item
@@ -568,12 +361,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = HeadEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryHead);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Head);
                 HeadSearchResults.ItemsSource = results;
                 HeadSearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryHead);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Head);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -609,12 +402,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = ChestEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryChest);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Chest);
                 ChestSearchResults.ItemsSource = results;
                 ChestSearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryChest);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Chest);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -650,12 +443,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = HandEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryHand);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Hand);
                 HandSearchResults.ItemsSource = results;
                 HandSearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryHand);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Hand);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -691,12 +484,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = LegEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryLeg);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Leg);
                 LegSearchResults.ItemsSource = results;
                 LegSearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryLeg);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Leg);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -732,12 +525,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = FootEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryFoot);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Foot);
                 FootSearchResults.ItemsSource = results;
                 FootSearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryFoot);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Foot);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -773,12 +566,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = EarEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryEar);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Ear);
                 EarSearchResults.ItemsSource = results;
                 EarSearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryEar);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Ear);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -814,12 +607,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = NeckEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryNeck);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Neck);
                 NeckSearchResults.ItemsSource = results;
                 NeckSearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryNeck);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Neck);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -855,12 +648,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = BraceletEntry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryBracelet);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Bracelet);
                 BraceletSearchResults.ItemsSource = results;
                 BraceletSearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryBracelet);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Bracelet);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -896,12 +689,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = Ring1Entry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryRing);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Ring);
                 Ring1SearchResults.ItemsSource = results;
                 Ring1SearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryRing);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Ring);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
@@ -937,12 +730,12 @@ namespace Private_Ethercloset.MVVM.View
             string searchTerm = Ring2Entry.Text;
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var results = PerformFuzzySearch(searchTerm, CategoryRing);
+                var results = PerformFuzzySearch(searchTerm, (int)EquipmentCategory.Ring);
                 Ring2SearchResults.ItemsSource = results;
                 Ring2SearchResults.IsDropDownOpen = true;
 
                 //get icon
-                var iconPath = GetIconPathFromDatabase(searchTerm, CategoryRing);
+                var iconPath = GetIconPathFromDatabase(searchTerm, (int)EquipmentCategory.Ring);
 
                 if (!string.IsNullOrEmpty(iconPath))
                 {
